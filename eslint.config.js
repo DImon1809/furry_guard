@@ -1,6 +1,7 @@
-import js from "@eslint/js";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
+
+import js from "@eslint/js";
 import eslintImportPrettier from "eslint-plugin-simple-import-sort";
 import globals from "globals";
 import tseslint from "typescript-eslint";
@@ -22,7 +23,19 @@ export default tseslint.config(
     rules: {
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
-      "simple-import-sort/imports": "error",
+      "simple-import-sort/imports": [
+        "error",
+        {
+          groups: [
+            ["^react", "^react-dom", "^react-router", "^@?\\w.*react"],
+            ["^@?\\w"],
+            ["^@"],
+            ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
+            ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+            ["^.+\\.(css|scss|sass|less)$"],
+          ],
+        },
+      ],
       "simple-import-sort/exports": "error",
     },
   },
