@@ -1,0 +1,24 @@
+.transfer__points {
+  margin-top: var(--space-xs);
+  min-height: 144px;
+}
+
+.point {
+  display: none;
+  margin: var(--space-2xs);
+
+  &.move {
+    display: block;
+    animation: 0.2s 0s linear animator;
+  }
+}
+
+@keyframes animator {
+  from {
+    transform: translateX(40px);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}

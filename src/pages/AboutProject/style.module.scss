@@ -1,0 +1,44 @@
+.section {
+  width: 80%;
+  margin: 0 auto;
+  transition: all 0.3s ease;
+
+  .main__header {
+    font-size: var(--space-m);
+    font-weight: 600;
+    text-align: center;
+    animation: 0.5s 0s linear animator;
+  }
+
+  .intro {
+    margin-top: var(--space-m);
+  }
+
+  .transfer__header {
+    margin-top: var(--space-m);
+    font-weight: 600;
+    animation: 0.5s 0s linear animator;
+  }
+
+  .question__header {
+    margin-top: var(--space-m);
+    font-weight: 600;
+    animation: 0.5s 0s linear animator;
+  }
+
+  .answers {
+    margin-top: var(--space-xs);
+  }
+}
+
+@keyframes animator {
+  from {
+    transform: translateY(5px);
+    opacity: 0.5;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

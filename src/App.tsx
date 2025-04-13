@@ -1,15 +1,15 @@
-import { Button } from "@/components/ui/button";
+import { Provider } from "react-redux";
+
+import { Header } from "./components/Header";
+import { Root } from "./Root";
+import { store } from "./store";
 
 const App = () => {
-  console.log("Hl");
   return (
-    <>
-      <div className="w-32 h-32 border-2 border-amber-900">sfdf</div>
-      <h2>Hello world</h2>
-      <Button variant="default" size="lg">
-        Hello
-      </Button>
-    </>
+    <Provider store={store}>
+      <Header />
+      <Root />
+    </Provider>
   );
 };
 
