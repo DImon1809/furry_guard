@@ -1,0 +1,25 @@
+.answers__question {
+  margin-top: var(--space-xs);
+  min-height: 120px;
+}
+
+.answer {
+  opacity: 0;
+  margin: var(--space-2xs);
+  transition: opacity 0.3s ease;
+
+  &.move {
+    opacity: 1;
+    animation: 0.2s 0s linear animator;
+  }
+}
+
+@keyframes animator {
+  from {
+    transform: translateY(10px);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}

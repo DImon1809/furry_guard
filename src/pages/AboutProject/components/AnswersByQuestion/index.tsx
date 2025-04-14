@@ -1,4 +1,6 @@
-import React from "react";
+import { Answer } from "./Answer";
+
+import styles from "./style.module.scss";
 
 const answers = [
   "✔ Домашних животных становится больше – растёт спрос на удобные решения для ухода.",
@@ -7,5 +9,11 @@ const answers = [
 ];
 
 export const AnswersByQuestion = () => {
-  return <div></div>;
+  return (
+    <div className={styles.answers__question}>
+      {answers.map((answer, index) => {
+        return <Answer answer={answer} nodeTime={index * 200} key={index} />;
+      })}
+    </div>
+  );
 };
