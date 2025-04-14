@@ -9,7 +9,6 @@ type Props = {
 };
 
 export const FormRouter = ({ type }: Props) => {
-  console.log(type);
   switch (type) {
     case AUTH_TYPES.LOGIN:
       return <LoginForm />;

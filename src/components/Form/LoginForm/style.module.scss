@@ -1,0 +1,59 @@
+.form {
+  max-width: 400px;
+  background-color: var(--main-color);
+  padding: 20px 20px 30px 20px;
+  border-radius: 12px;
+  box-shadow: var(--main-shadow);
+  margin: 120px auto;
+
+  @media (max-width: 640px) {
+    padding: 20px 12px 30px 12px;
+  }
+
+  .arrow__back {
+    cursor: pointer;
+    opacity: 1;
+    transition: all 0.3s ease;
+
+    @media (max-width: 640px) {
+      cursor: default;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        opacity: 0.5;
+        transform: translateX(-5px);
+      }
+    }
+
+    &:active {
+      opacity: 0.5;
+      transform: translateX(-5px);
+    }
+  }
+
+  .email__wrapper,
+  .password__wrapper {
+    margin-top: var(--space-m);
+  }
+
+  .password__wrapper {
+    position: relative;
+  }
+
+  .eye__wrapper {
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+    bottom: 14%;
+    right: 10px;
+
+    @media (max-width: 640px) {
+      cursor: default;
+    }
+  }
+
+  .login__button {
+    margin-top: var(--space-lg);
+  }
+}

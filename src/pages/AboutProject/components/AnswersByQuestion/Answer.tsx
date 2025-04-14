@@ -17,7 +17,7 @@ export const Answer = ({ answer, nodeTime }: Props) => {
   const handleScroll = (): void => {
     const answerBlock = answerRef?.current?.getBoundingClientRect();
 
-    if (answerBlock && answerBlock.top <= window.innerHeight - 100) {
+    if (answerBlock && answerBlock.top <= window.innerHeight - 50) {
       setIsAnimation(true);
     }
 

@@ -8,6 +8,5 @@ type Props = {
 };
 
 export const AuthPage = ({ type }: Props) => {
-  console.log(type);
   return <FormRouter type={type} />;
 };
