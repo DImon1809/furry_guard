@@ -1,3 +1,7 @@
 import { combineReducers } from "@reduxjs/toolkit";
 
-export const rootReducer = combineReducers({});
+import { currentUserSlice } from "./currentUserSlice";
+
+export const rootReducer = combineReducers({
+  current: currentUserSlice.reducer,
+});

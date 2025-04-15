@@ -1,11 +1,12 @@
 import React from "react";
-import { GoArrowLeft } from "react-icons/go";
 import { RiEyeFill } from "react-icons/ri";
 import { RiEyeCloseFill } from "react-icons/ri";
-import { useNavigate } from "react-router-dom";
 
 import { Button, Input, Label } from "@/components/ui";
-import { cn } from "@/lib/utils";
+import { ArrowBack } from "@/components/ui";
+import { useAuth } from "@/hooks/useAuth";
+
+import { FormWrapper } from "../FormWrapper";
 
 import styles from "./style.module.scss";
 
@@ -17,7 +18,7 @@ enum password_types {
 type types = keyof typeof password_types;
 
 export const LoginForm = () => {
-  const navigate = useNavigate();
+  const { logIn } = useAuth();
 
   const [passwordType, setPasswordType] = React.useState<types>("password");
 
@@ -27,13 +28,15 @@ export const LoginForm = () => {
     return setPasswordType(password_types.password);
   };
 
-  const goBack = () => {
-    navigate("/");
+  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    logIn();
   };
 
   return (
-    <form className={styles.form}>
-      <GoArrowLeft size={22} className={styles.arrow__back} onClick={goBack} />
+    <FormWrapper>
+      <ArrowBack />
       <div className={styles.email__wrapper}>
         <Label htmlFor="email">Почта</Label>
         <Input type="email" id="email" placeholder="Почта" className="!px-2" />
@@ -49,7 +52,9 @@ export const LoginForm = () => {
           )}
         </div>
       </div>
-      <Button className={cn("w-32", styles.login__button)}>Войти</Button>
-    </form>
+      <Button className={"w-32"} onClick={handleSubmit}>
+        Войти
+      </Button>
+    </FormWrapper>
   );
 };

@@ -1,0 +1,15 @@
+.password__wrapper {
+  position: relative;
+
+  .eye__wrapper {
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+    bottom: 14%;
+    right: 10px;
+
+    @media (max-width: 640px) {
+      cursor: default;
+    }
+  }
+}
