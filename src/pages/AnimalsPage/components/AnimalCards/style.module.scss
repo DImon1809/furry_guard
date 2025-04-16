@@ -1,0 +1,99 @@
+.animals__list {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin: 20px auto 0;
+  transition: width 0.3s ease;
+}
+
+.animal__card {
+  width: 400px;
+  height: 120px;
+  padding: 20px 10px;
+  border-radius: 12px;
+  box-shadow: var(--main-shadow);
+  gap: var(--space-m);
+  position: relative;
+  cursor: pointer;
+  display: none;
+
+  &.move {
+    display: flex;
+    animation: 0.2s 0s linear animator;
+  }
+
+  @media (hover: hover) {
+    &:hover h3 {
+      opacity: 0.5;
+      transform: translateY(-5px);
+    }
+
+    &:hover .animal__avatar {
+      opacity: 0.5;
+    }
+  }
+
+  @media (max-width: 640px) {
+    width: 330px;
+  }
+
+  &:active h3 {
+    opacity: 0.5;
+    transform: translateY(-5px);
+  }
+
+  &:active .animal__avatar {
+    opacity: 0.5;
+  }
+
+  @media (max-width: 640px) {
+    cursor: default;
+  }
+
+  .animal__avatar {
+    width: 52px;
+    height: 52px;
+    transition: opacity 0.3s ease;
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+  }
+
+  .animal__description {
+    .nickname__status {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2xs);
+
+      h3 {
+        font-size: 18px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .status {
+        color: green;
+      }
+    }
+  }
+
+  .cross__wrapper {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
+}
+
+@keyframes animator {
+  from {
+    transform: translateX(40px);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}

@@ -1,0 +1,17 @@
+.section {
+  width: fit-content;
+  display: flex;
+  margin: 20px auto;
+  gap: var(--space-m);
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+  }
+
+  .animals__list {
+    width: fit-content;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: var(--main-color);
+  }
+}

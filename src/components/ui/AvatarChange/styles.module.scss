@@ -1,0 +1,48 @@
+.change__wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.avatar__change {
+  width: 32px;
+  height: 32px;
+  border: 2px solid black;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  @media (max-width: 640px) {
+    cursor: default;
+  }
+
+  .plus {
+    width: 21px;
+    height: 21px;
+    position: relative;
+
+    span {
+      width: 100%;
+      height: 2px;
+      display: block;
+      background-color: black;
+      border-radius: 2px;
+      position: absolute;
+    }
+
+    .horisontal {
+      transform: rotate(0deg);
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .vertical {
+      top: 48%;
+      left: 3.5%;
+      transform: translate(-50%, -50%);
+      transform: rotate(90deg);
+    }
+  }
+}

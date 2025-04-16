@@ -24,7 +24,7 @@
     &__items {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: var(--space-m);
       float: right;
       margin: 7px 20px 7px 0;
 

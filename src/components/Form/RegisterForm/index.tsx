@@ -17,7 +17,11 @@ enum password_types {
 
 type types = keyof typeof password_types;
 
-export const RegisterForm = () => {
+type Props = {
+  children?: React.ReactNode;
+};
+
+export const RegisterForm = ({ children }: Props) => {
   const { logIn } = useAuth();
 
   const [passwordType, setPasswordType] = React.useState<types>(password_types.password);
@@ -44,6 +48,7 @@ export const RegisterForm = () => {
   return (
     <FormWrapper>
       <ArrowBack />
+      {children}
       <div>
         <Label htmlFor="first__name">Имя</Label>
         <Input type="text" id="first__name" placeholder="Введите имя" className="!px-2" />
