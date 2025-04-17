@@ -1,5 +1,3 @@
-import React from "react";
-
 import { HospitalCard } from "./HospitalCard";
 
 import styles from "./style.module.scss";

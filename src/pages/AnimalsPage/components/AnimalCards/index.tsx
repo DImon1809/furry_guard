@@ -1,5 +1,3 @@
-import React from "react";
-
 import { AnimalCard } from "./AnimalCard";
 
 import styles from "./style.module.scss";

@@ -1,4 +1,3 @@
-import React from "react";
 import { GoArrowLeft } from "react-icons/go";
 
 import styles from "./style.module.scss";

@@ -1,5 +1,3 @@
-import React from "react";
-
 import { FormRouter } from "@/components/Form/FormRouter";
 import { AuthTypes } from "@/models";
 

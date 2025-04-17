@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import NotFoundImg from "@/assets/not_found.webp";

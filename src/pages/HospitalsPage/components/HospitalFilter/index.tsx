@@ -1,5 +1,3 @@
-import React from "react";
-
 import { ArrowBack, Button } from "@/components/ui";
 import { Label, Selector } from "@/components/ui";
 

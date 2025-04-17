@@ -1,5 +1,3 @@
-import React from "react";
-
 import { RegisterForm } from "@/components/Form/RegisterForm";
 
 import { AvatarChange } from "../../components/ui/AvatarChange";
