@@ -1,5 +1,6 @@
 import React from "react";
 import { RiEyeCloseFill, RiEyeFill } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
 
 import { Button, Input, Label } from "@/components/ui";
 import { ArrowBack } from "@/components/ui";
@@ -22,10 +23,16 @@ type Props = {
 };
 
 export const RegisterForm = ({ children }: Props) => {
+  const navigate = useNavigate();
+
   const { logIn } = useAuth();
 
   const [passwordType, setPasswordType] = React.useState<types>(password_types.password);
   const [repetPasswordType, setRepetType] = React.useState<types>(password_types.password);
+
+  const goBack = () => {
+    navigate(-1);
+  };
 
   const changerPasswordType = () => {
     if (passwordType === password_types.password) return setPasswordType(password_types.text);
@@ -47,7 +54,7 @@ export const RegisterForm = ({ children }: Props) => {
 
   return (
     <FormWrapper>
-      <ArrowBack />
+      <ArrowBack handler={goBack} />
       {children}
       <div>
         <Label htmlFor="first__name">Имя</Label>
@@ -101,9 +108,13 @@ export const RegisterForm = ({ children }: Props) => {
           )}
         </div>
       </div>
-      <Button className="w-52" onClick={handleSubmit}>
-        Зарегистрироваться
-      </Button>
+      {children ? (
+        <Button className="w-52">Редактировать профиль</Button>
+      ) : (
+        <Button className="w-52" onClick={handleSubmit}>
+          Зарегистрироваться
+        </Button>
+      )}
     </FormWrapper>
   );
 };

@@ -8,9 +8,15 @@ import styles from "./style.module.scss";
 type Props = {
   list: string[];
   placeholder: string;
+  id: string;
 };
 
-export const Selector = ({ list, placeholder, ...props }: React.ComponentProps<"div"> & Props) => {
+export const Selector = ({
+  list,
+  placeholder,
+  id,
+  ...props
+}: React.ComponentProps<"div"> & Props) => {
   const selectRef = React.useRef<HTMLDivElement>(null);
 
   const [data, setData] = React.useState<string>("");
@@ -55,13 +61,20 @@ export const Selector = ({ list, placeholder, ...props }: React.ComponentProps<"
       return setIsMobile(true);
     }
 
-    return setIsMobile(false);
+    setIsMobile(false);
   }, [windowWidth]);
 
   return (
     <>
+      <select style={{ display: "none" }} id={id}>
+        {list.map(item => (
+          <option key={item} value={item}>
+            {item}
+          </option>
+        ))}
+      </select>
       <div
-        className={cn(styles.select, active ? styles.active : "")}
+        className={cn(styles.select, active && styles.active)}
         onClick={handleActiveSelect}
         ref={selectRef}
         {...props}
@@ -70,15 +83,15 @@ export const Selector = ({ list, placeholder, ...props }: React.ComponentProps<"
         <ul
           className={cn(
             styles.lists,
-            list.length > 4 ? styles.long : "",
-            active && isMobile ? `${styles.mobile} ${styles.active}` : "",
+            list.length > 4 && styles.long,
+            active && isMobile && `${styles.mobile} ${styles.active}`,
           )}
         >
           {active &&
             list.map((l, index) => {
               return (
                 <li
-                  className={cn(styles.list, isMobile ? styles.mobile : "")}
+                  className={cn(styles.list, isMobile && styles.mobile)}
                   onClick={handleClickList}
                   key={index}
                 >
@@ -88,7 +101,7 @@ export const Selector = ({ list, placeholder, ...props }: React.ComponentProps<"
             })}
         </ul>
 
-        <div className={cn(styles.caret__wrapper, active ? styles.active : "")}>
+        <div className={cn(styles.caret__wrapper, active && styles.active)}>
           <AiFillCaretRight size={16} />
         </div>
       </div>

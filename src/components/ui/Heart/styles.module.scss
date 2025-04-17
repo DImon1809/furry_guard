@@ -1,0 +1,19 @@
+.heart {
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+
+  @media (max-width: 640px) {
+    cursor: default;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+
+  &:active {
+    opacity: 0.5;
+  }
+}

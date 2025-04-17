@@ -33,17 +33,11 @@
     max-height: 144px;
     position: absolute;
     top: 116%;
-    // top: 126%;
     left: 0;
     z-index: 100;
     border-radius: 8px;
-    // background-color: var(--main-color);
     background-color: rgb(192, 192, 199);
     box-shadow: var(--main-shadow);
-    // box-shadow:
-    //   0 1px 2px 0 rgb(0 0 0 / 0.05),
-    //   0 0 0 2px rgba(164, 164, 175, 0.5),
-    //   0 0 0 3px rgba(164, 164, 175, 0.5);
 
     &.long {
       overflow-y: scroll;
@@ -68,7 +62,6 @@
   .list {
     width: 100%;
     height: 30px;
-    // border: 2px solid rgba(0, 0, 0, 0.2);
     border: 2px solid var(--main-color);
     color: var(--main-color);
     margin-top: 6px;

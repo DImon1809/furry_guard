@@ -39,7 +39,7 @@ export const Answer = ({ answer, nodeTime }: Props) => {
   }, [nodeTime]);
 
   return (
-    <div ref={answerRef} className={cn(styles.answer, isAnimation ? styles.move : "")}>
+    <div ref={answerRef} className={cn(styles.answer, isAnimation && styles.move)}>
       {answer}
     </div>
   );

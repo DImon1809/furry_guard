@@ -1,6 +1,7 @@
 import React from "react";
 import { RiEyeFill } from "react-icons/ri";
 import { RiEyeCloseFill } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
 
 import { Button, Input, Label } from "@/components/ui";
 import { ArrowBack } from "@/components/ui";
@@ -18,9 +19,15 @@ enum password_types {
 type types = keyof typeof password_types;
 
 export const LoginForm = () => {
+  const navigate = useNavigate();
+
   const { logIn } = useAuth();
 
   const [passwordType, setPasswordType] = React.useState<types>("password");
+
+  const goBack = () => {
+    navigate(-1);
+  };
 
   const changerType = () => {
     if (passwordType === password_types.password) return setPasswordType(password_types.text);
@@ -36,7 +43,7 @@ export const LoginForm = () => {
 
   return (
     <FormWrapper>
-      <ArrowBack />
+      <ArrowBack handler={goBack} />
       <div className={styles.email__wrapper}>
         <Label htmlFor="email">Почта</Label>
         <Input type="email" id="email" placeholder="Почта" className="!px-2" />

@@ -24,7 +24,7 @@ export const AnimalCard = ({ nodeTime }: Props) => {
   }, [isAnimation, nodeTime]);
 
   return (
-    <div className={cn(styles.animal__card, isAnimation ? styles.move : "")}>
+    <div className={cn(styles.animal__card, isAnimation && styles.move)}>
       <div className={styles.animal__avatar}>
         <img
           src="https://www.proplan.ru/sites/default/files/styles/image_576/public/2023-08/15.jpg?itok=wkCYRRkp"

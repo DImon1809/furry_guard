@@ -1,12 +1,17 @@
-import React from "react";
-
 import { Button, Label, Selector } from "@/components/ui";
+import { ArrowBack } from "@/components/ui";
 
 import styles from "./style.module.scss";
 
-export const AnimalFilter = () => {
+type Props = {
+  isOpen: boolean;
+  handleOpenFilter: () => void;
+};
+
+export const AnimalFilter = ({ isOpen, handleOpenFilter }: Props) => {
   return (
-    <section className={styles.left__filter}>
+    <section className={styles.animal__filter}>
+      {isOpen && <ArrowBack handler={handleOpenFilter} />}
       <div>
         <Label htmlFor="species">Вид животного</Label>
         <Selector
@@ -36,10 +41,10 @@ export const AnimalFilter = () => {
       </div>
 
       <div>
-        <Label htmlFor="sort">Сортировать</Label>
+        <Label htmlFor="animal-sort">Сортировать</Label>
         <Selector
-          id="sort"
-          placeholder="Выберите статус..."
+          id="animal-sort"
+          placeholder="Выберите сортировку..."
           list={["По алфавиту", "По возрастания", "По убыванию", "С конца"]}
         />
       </div>

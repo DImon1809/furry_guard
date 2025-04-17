@@ -1,0 +1,107 @@
+.hospitals__list {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin: 20px auto 0;
+  transition: width 0.3s ease;
+}
+
+.hospital__card {
+  width: 400px;
+  height: 160px;
+  padding: 20px 10px;
+  border-radius: 12px;
+  box-shadow: var(--main-shadow);
+  cursor: pointer;
+  position: relative;
+  display: none;
+
+  &.move {
+    display: flex;
+    animation: 0.2s 0s linear animator;
+  }
+
+  @media (max-width: 640px) {
+    width: 330px;
+    cursor: default;
+  }
+
+  .card__info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+
+    @media (hover: hover) {
+      &:hover h3 {
+        opacity: 0.5;
+        transform: translateY(-5px);
+      }
+
+      &:hover .hospital__avatar {
+        opacity: 0.5;
+      }
+    }
+
+    &:active h3 {
+      opacity: 0.5;
+      transform: translateY(-5px);
+    }
+
+    &:active .hospital__avatar {
+      opacity: 0.5;
+    }
+  }
+
+  .card__header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .hospital__avatar {
+    width: 52px;
+    height: 52px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+  }
+
+  .status__stars {
+    .status {
+      p {
+        color: green;
+      }
+    }
+
+    .stars {
+      display: flex;
+    }
+  }
+
+  .hospital__description {
+    h3 {
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+  }
+
+  .heart__wrapper {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
+}
+
+@keyframes animator {
+  from {
+    transform: translateX(40px);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}

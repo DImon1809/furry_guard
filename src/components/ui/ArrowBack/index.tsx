@@ -1,15 +1,12 @@
 import React from "react";
 import { GoArrowLeft } from "react-icons/go";
-import { useNavigate } from "react-router-dom";
 
 import styles from "./style.module.scss";
 
-export const ArrowBack = () => {
-  const navigate = useNavigate();
+type Props = {
+  handler: () => void;
+};
 
-  const goBack = () => {
-    navigate(-1);
-  };
-
-  return <GoArrowLeft size={22} className={styles.arrow__back} onClick={goBack} />;
+export const ArrowBack = ({ handler }: Props) => {
+  return <GoArrowLeft size={22} className={styles.arrow__back} onClick={handler} />;
 };

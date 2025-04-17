@@ -20,5 +20,5 @@ export const Point = ({ pointText, nodeTime }: Props) => {
     }
   }, [isAnimation, nodeTime]);
 
-  return <div className={cn(styles.point, isAnimation ? styles.move : "")}>{pointText}</div>;
+  return <div className={cn(styles.point, isAnimation && styles.move)}>{pointText}</div>;
 };
