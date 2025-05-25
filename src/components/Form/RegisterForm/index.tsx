@@ -1,120 +1,128 @@
 import React from "react";
-import { RiEyeCloseFill, RiEyeFill } from "react-icons/ri";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-import { Button, Input, Label } from "@/components/ui";
+import { FormikErrors, useFormikContext } from "formik";
+
+import { Button } from "@/components/ui";
 import { ArrowBack } from "@/components/ui";
-import { DatePicker } from "@/components/ui";
-import { useAuth } from "@/hooks/useAuth";
+import { clearFormikErrors, vEmail, vNotEmpty } from "@/lib/validations";
+import { RegisterType } from "@/models/AuthTypes";
+import { useRegisterMutation } from "@/store/features/auth/authApi";
 
 import { FormWrapper } from "../FormWrapper";
 
-import styles from "./style.module.scss";
+import { ConfidantInfo } from "./components/ConfidantInfo";
+import { UserInfo } from "./components/UserInfo";
 
-enum password_types {
-  password = "password",
-  text = "text",
-}
-
-type types = keyof typeof password_types;
+type RegisterFromType = RegisterType & {
+  repeatPassword: string;
+};
 
 type Props = {
   children?: React.ReactNode;
 };
 
-export const RegisterForm = ({ children }: Props) => {
+const RegisterFormWrapper = ({ children }: Props) => {
+  const { submitForm } = useFormikContext();
+
   const navigate = useNavigate();
-
-  const { logIn } = useAuth();
-
-  const [passwordType, setPasswordType] = React.useState<types>(password_types.password);
-  const [repetPasswordType, setRepetType] = React.useState<types>(password_types.password);
 
   const goBack = () => {
     navigate(-1);
   };
 
-  const changerPasswordType = () => {
-    if (passwordType === password_types.password) return setPasswordType(password_types.text);
-
-    return setPasswordType(password_types.password);
-  };
-
-  const changerRepetType = () => {
-    if (repetPasswordType === password_types.password) return setRepetType(password_types.text);
-
-    return setRepetType(password_types.password);
-  };
-
-  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-
-    logIn();
-  };
-
   return (
-    <FormWrapper>
+    <>
       <ArrowBack handler={goBack} />
       {children}
-      <div>
-        <Label htmlFor="first__name">Имя</Label>
-        <Input type="text" id="first__name" placeholder="Введите имя" className="!px-2" />
-      </div>
-      <div>
-        <Label htmlFor="last__name">Фамилия</Label>
-        <Input type="text" id="last__name" placeholder="Введите фамилию" className="!px-2" />
-      </div>
-      <div>
-        <Label htmlFor="surname">Отчество</Label>
-        <Input type="text" id="surname" placeholder="Введите отчество" className="!px-2" />
-      </div>
-      <div>
-        <Label htmlFor="surname">Дата рождения</Label>
-        <DatePicker id="date__picker" text="Укажите дату рождения" />
-      </div>
-      <div>
-        <Label htmlFor="email">Почта</Label>
-        <Input type="email" id="email" placeholder="Введите почту" className="!px-2" />
-      </div>
-      <div className={styles.password__wrapper}>
-        <Label htmlFor="password">Пароль</Label>
-        <Input
-          type={passwordType}
-          id="password"
-          placeholder="Придумайте пароль"
-          className="!px-2"
-        />
-        <div className={styles.eye__wrapper} onClick={changerPasswordType}>
-          {passwordType === password_types.password ? (
-            <RiEyeFill size={20} />
-          ) : (
-            <RiEyeCloseFill size={20} />
-          )}
-        </div>
-      </div>
-      <div className={styles.password__wrapper}>
-        <Label htmlFor="repet__password">Повторный пароль</Label>
-        <Input
-          type={repetPasswordType}
-          id="repet__password"
-          placeholder="Повторите пароль"
-          className="!px-2"
-        />
-        <div className={styles.eye__wrapper} onClick={changerRepetType}>
-          {repetPasswordType === password_types.password ? (
-            <RiEyeFill size={20} />
-          ) : (
-            <RiEyeCloseFill size={20} />
-          )}
-        </div>
-      </div>
+      <UserInfo />
+      <ConfidantInfo />
+
       {children ? (
         <Button className="w-52">Редактировать профиль</Button>
       ) : (
-        <Button className="w-52" onClick={handleSubmit}>
+        <Button
+          className="w-52"
+          onClick={() => {
+            submitForm();
+          }}
+        >
           Зарегистрироваться
         </Button>
       )}
+    </>
+  );
+};
+
+export const RegisterForm = ({ children }: Props) => {
+  const navigate = useNavigate();
+
+  const [register] = useRegisterMutation();
+
+  const initialValues: RegisterFromType = {
+    firstName: "",
+    surname: "",
+    lastName: "",
+    email: "",
+    password: "",
+    repeatPassword: "",
+    dateOfBirth: "",
+  };
+
+  const validate = (values: RegisterFromType): FormikErrors<RegisterFromType> => {
+    const errors: FormikErrors<RegisterFromType> = {};
+
+    const { firstName, lastName, surname, dateOfBirth, email, password, repeatPassword } = values;
+
+    errors.firstName = vNotEmpty(firstName);
+    errors.lastName = vNotEmpty(lastName);
+    errors.surname = vNotEmpty(surname);
+    errors.dateOfBirth = vNotEmpty(dateOfBirth);
+    errors.email = vEmail(email);
+    errors.password = password.length > 6 ? undefined : "Пароль должен быть больше 6 символов";
+    errors.repeatPassword =
+      repeatPassword && password === repeatPassword ? undefined : "Пароли должны совпадать";
+
+    return clearFormikErrors(errors);
+  };
+
+  const handleSubmit = async (values: RegisterFromType) => {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { repeatPassword, ...data } = values;
+
+      await register(data).unwrap();
+
+      navigate("/");
+
+      toast.success("Вы успешно авторизовались", {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch {
+      toast.error("Что-то пошло не так", {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  return (
+    <FormWrapper initialValues={initialValues} onSubmit={handleSubmit} validate={validate}>
+      <RegisterFormWrapper>{children}</RegisterFormWrapper>
     </FormWrapper>
   );
 };

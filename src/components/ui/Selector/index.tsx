@@ -9,12 +9,14 @@ type Props = {
   list: string[];
   placeholder: string;
   id: string;
+  onChange?: (val: unknown) => void;
 };
 
 export const Selector = ({
   list,
   placeholder,
   id,
+  onChange,
   ...props
 }: React.ComponentProps<"div"> & Props) => {
   const selectRef = React.useRef<HTMLDivElement>(null);
@@ -63,6 +65,10 @@ export const Selector = ({
 
     setIsMobile(false);
   }, [windowWidth]);
+
+  React.useEffect(() => {
+    if (data && onChange) onChange(data);
+  }, [data]);
 
   return (
     <>

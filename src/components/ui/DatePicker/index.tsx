@@ -16,9 +16,17 @@ import { cn } from "@/lib/utils";
 export function DatePicker({
   className,
   text,
+  onChange,
   ...props
-}: React.ComponentProps<"div"> & { text: string }) {
+}: React.ComponentProps<"div"> & { text: string } & {
+  value: Date;
+  onChange: (val: Date) => void;
+}) {
   const [date, setDate] = React.useState<Date>();
+
+  React.useEffect(() => {
+    if (date) onChange(date);
+  }, [date]);
 
   return (
     <div className={className} {...props}>

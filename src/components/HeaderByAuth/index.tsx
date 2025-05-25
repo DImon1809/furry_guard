@@ -3,7 +3,9 @@ import { IoMdExit } from "react-icons/io";
 import { PiDogDuotone } from "react-icons/pi";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { useAuth } from "@/hooks/useAuth";
+import { useAppDispatch } from "@/store";
+import { useAppSelector } from "@/store";
+import { logout } from "@/store/features/auth/authSlice";
 
 import { Button } from "../ui";
 
@@ -16,10 +18,12 @@ enum paths {
 }
 
 export const HeaderByAuth = () => {
+  const dispacth = useAppDispatch();
+
+  const { firstName, lastName, surname } = useAppSelector(state => state.currentUser);
+
   const location = useLocation();
   const navigate = useNavigate();
-
-  const { logOut } = useAuth();
 
   const currentLocation = `/${location.pathname.split("/").at(-1)}`;
 
@@ -35,8 +39,11 @@ export const HeaderByAuth = () => {
     navigate(paths.hospitals);
   };
 
+  // todo переделать
   const handleLogOut = () => {
-    logOut();
+    dispacth(logout());
+    localStorage.removeItem("token");
+    navigate("/");
   };
 
   return (
@@ -44,7 +51,7 @@ export const HeaderByAuth = () => {
       <div className={styles.profile__wrapper}>
         <div className={styles.profile__avatar} onClick={goToProfile}></div>
         <div>
-          <span>Ваше имя</span>
+          <span>{`${lastName} ${firstName} ${surname}`}</span>
         </div>
       </div>
       <div className={styles.buttons}>

@@ -1,5 +1,9 @@
+import { FaPaw } from "react-icons/fa6";
+
 import { Button, Label, Selector } from "@/components/ui";
 import { ArrowBack } from "@/components/ui";
+import { useModal } from "@/hooks/useModal";
+import { cn } from "@/lib/utils";
 
 import styles from "./style.module.scss";
 
@@ -9,6 +13,8 @@ type Props = {
 };
 
 export const AnimalFilter = ({ isOpen, handleOpenFilter }: Props) => {
+  const openModal = useModal();
+
   return (
     <section className={styles.animal__filter}>
       {isOpen && <ArrowBack handler={handleOpenFilter} />}
@@ -22,9 +28,9 @@ export const AnimalFilter = ({ isOpen, handleOpenFilter }: Props) => {
       </div>
 
       <div>
-        <Label htmlFor="gender">Пол</Label>
+        <Label htmlFor="pet__gender">Пол</Label>
         <Selector
-          id="gender"
+          id="pet__gender"
           placeholder="Выберите пол животного..."
           list={["Мальчик", "Девочка"]}
         />
@@ -49,7 +55,13 @@ export const AnimalFilter = ({ isOpen, handleOpenFilter }: Props) => {
         />
       </div>
 
-      <Button className="w-64 !mx-auto">Показать результат</Button>
+      <div className={styles.button__group}>
+        <Button className={cn("w-44")} onClick={() => openModal("addPet")}>
+          Добавить питомца
+          <FaPaw />
+        </Button>
+        <Button className="w-32">Показать</Button>
+      </div>
     </section>
   );
 };

@@ -1,6 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { AboutProject } from "./pages/AboutProject";
@@ -9,21 +7,28 @@ import { AuthPage } from "./pages/AuthPage";
 import { HospitalsPage } from "./pages/HospitalsPage";
 import { NotFound } from "./pages/NotFound";
 import { ProfilePage } from "./pages/ProfilePage";
-import { addCurrent } from "./store/currentUserSlice";
+import { setAuth } from "./store/features/auth/authSlice";
+import { useLazyCurrentQuery } from "./store/features/currentUser/currentUserApi";
 import { AUTH_TYPES } from "./models";
-import { RootType } from "./store";
+import { useAppSelector } from "./store";
+import { useAppDispatch } from "./store";
 
 export const Root = () => {
-  const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state: RootType) => state.current);
+  const [getCurrent] = useLazyCurrentQuery();
 
+  const dispatch = useAppDispatch();
+  const { isAuthenticated } = useAppSelector(state => state.auth);
+
+  // todo переделать
   React.useEffect(() => {
-    const currentToken = localStorage.getItem("token_key");
+    const currentToken = localStorage.getItem("token");
 
     if (currentToken) {
-      dispatch(addCurrent({ isAuthenticated: true, token: currentToken }));
+      getCurrent();
+
+      dispatch(setAuth({ isAuthenticated: true, token: currentToken }));
     }
-  }, []);
+  }, [dispatch, getCurrent, isAuthenticated]);
 
   return (
     <BrowserRouter>

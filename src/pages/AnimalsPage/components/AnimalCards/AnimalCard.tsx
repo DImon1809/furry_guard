@@ -5,14 +5,16 @@ import { ru } from "date-fns/locale";
 
 import { Cross } from "@/components/ui";
 import { cn } from "@/lib/utils";
+import type { PetOfUser } from "@/models/CurrentUser";
 
 import styles from "./style.module.scss";
 
 type Props = {
+  pet: PetOfUser;
   nodeTime: number;
 };
 
-export const AnimalCard = ({ nodeTime }: Props) => {
+export const AnimalCard = ({ pet, nodeTime }: Props) => {
   const [isAnimation, setIsAnimation] = React.useState<boolean>(false);
 
   React.useEffect(() => {
@@ -34,7 +36,7 @@ export const AnimalCard = ({ nodeTime }: Props) => {
 
       <div className={styles.animal__description}>
         <div className={styles.nickname__status}>
-          <h3>Бобик</h3>
+          <h3>{pet.name}</h3>
           <p className={styles.status}>здоров</p>
         </div>
         <div>{`Дата рождения: ${format(new Date(), "dd.MM.yyyy", { locale: ru })}`}</div>

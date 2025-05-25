@@ -7,5 +7,5 @@ type Props = {
 };
 
 export const ContentWrapper = ({ children }: Props) => {
-  return <main className={styles.main}>{children}</main>;
+  return <section className={styles.content__wrapper}>{children}</section>;
 };

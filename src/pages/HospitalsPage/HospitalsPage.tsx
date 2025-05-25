@@ -40,7 +40,7 @@ const HospitalsPage = () => {
   return (
     <>
       <HeaderByAuth />
-      <main className={styles.section}>
+      <section className={styles.section}>
         <div className={cn(styles.additional__filter, isOpen && styles.open)}>
           <div className={styles.open__filter}>
             <Button className="w-48" onClick={handleOpenFilter}>
@@ -56,7 +56,7 @@ const HospitalsPage = () => {
           <Input type="text" id="surname" placeholder="Поиск..." className="!px-2" />
           <HospitalCards />
         </section>
-      </main>
+      </section>
     </>
   );
 };

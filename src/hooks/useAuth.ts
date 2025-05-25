@@ -1,18 +1,19 @@
-import { useDispatch } from "react-redux";
+// Todo legacy
 import { useNavigate } from "react-router-dom";
 
-import { addCurrent, removeCurrent } from "@/store/currentUserSlice";
+import { useAppDispatch } from "@/store";
+import { setAuth } from "@/store/features/auth/authSlice";
 
 const TOKEN_KEY = "token_key";
 
 export const useAuth = () => {
   const navigate = useNavigate();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const logIn = () => {
     localStorage.setItem(TOKEN_KEY, "token");
-    dispatch(addCurrent({ isAuthenticated: true, token: "token" }));
+    dispatch(setAuth({ isAuthenticated: true, token: "token" }));
     navigate("/");
   };
 
