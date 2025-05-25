@@ -7,3 +7,32 @@
   z-index: 20;
   background-color: rgba(0, 0, 0, 0.4);
 }
+
+.modal {
+  min-width: 420px;
+  height: fit-content;
+  padding: 30px 20px;
+  border-radius: 12px;
+  background-color: var(--main-color);
+  margin: 0;
+  position: fixed;
+  z-index: 30;
+  left: 50%;
+  top: 60px;
+  transform: translateX(-50%);
+
+  @media (max-width: 640px) {
+    min-width: 360px;
+    min-height: fit-content;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform: none;
+  }
+
+  &.mobile {
+    position: relative;
+    border-radius: 0;
+  }
+}

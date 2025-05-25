@@ -1,4 +1,5 @@
 import type { Pet } from "@/models/Pet";
+import type { PetDetails } from "@/models/Pet";
 import { serviceApi } from "@/store/serviceApi";
 
 export const petApi = serviceApi.injectEndpoints({
@@ -10,7 +11,14 @@ export const petApi = serviceApi.injectEndpoints({
         body: data,
       }),
     }),
+
+    getOnePet: builder.query<PetDetails, { id: number }>({
+      query: ({ id }) => ({
+        url: `/pet/${id}`,
+        method: "get",
+      }),
+    }),
   }),
 });
 
-export const { useAddPetMutation } = petApi;
+export const { useAddPetMutation, useLazyGetOnePetQuery } = petApi;

@@ -7,13 +7,17 @@ export enum ActivityLevel {
 export type Pet = {
   name: string;
   breed: string;
-  gender: "М" | "Ж";
+  gender: "М" | "Ж" | null;
   age: {
     year: number;
     month: number;
     week: number;
   };
-  dateOfBirth: string;
+  dateOfBirth: string | null;
   weight: number;
   activityLevel: ActivityLevel | null;
+};
+
+export type PetDetails = Pet & {
+  recommendations: string;
 };

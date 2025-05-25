@@ -1,5 +1,7 @@
 import React, { useCallback } from "react";
 
+import { cn } from "@/lib/utils";
+
 import { AddPetModal } from "./AddPetModal";
 
 import styles from "./style.module.scss";
@@ -32,6 +34,9 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     isOpen: false,
   });
 
+  const [windowWidth, setWindowWidth] = React.useState<number>(window.innerWidth);
+  const [isMobile, setIsMobile] = React.useState<boolean>(false);
+
   const Component = state.type ? (modals as Record<string, React.ElementType>)[state.type] : null;
 
   const openModal: OpenModal = React.useCallback(
@@ -48,11 +53,36 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     setState({ type: null, isOpen: false });
   }, [setState]);
 
+  React.useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    document.addEventListener("resize", handleResize);
+
+    return () => document.removeEventListener("resize", handleResize);
+  }, []);
+
+  React.useEffect(() => {
+    if (windowWidth <= 640) {
+      return setIsMobile(true);
+    }
+
+    setIsMobile(false);
+  }, [windowWidth]);
+
   return (
     <ModalContext.Provider value={{ modalType: state.type, openModal }}>
-      {state.isOpen && Component && <Component closeModal={closeModal} />}
-      {state.isOpen && <div className={styles.global__wrapper} onClick={() => closeModal()}></div>}
-      <main>{children}</main>
+      {state.isOpen && Component && (
+        <Component
+          closeModal={closeModal}
+          className={cn(styles.modal, isMobile && styles.mobile)}
+        />
+      )}
+      {state.isOpen && !isMobile && (
+        <div className={styles.global__wrapper} onClick={() => closeModal()}></div>
+      )}
+      {!(isMobile && state.isOpen) && <main>{children}</main>}
     </ModalContext.Provider>
   );
 };

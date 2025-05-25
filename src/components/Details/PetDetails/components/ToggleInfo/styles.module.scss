@@ -1,0 +1,42 @@
+.items {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+
+  .toggle__border {
+    width: 90px;
+    height: 36px;
+    border-radius: 8px;
+    background-color: transparent;
+    border: 2px solid #dadada;
+    position: absolute;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    @media (max-width: 640px) {
+      cursor: default;
+    }
+
+    &.left {
+      left: 0;
+    }
+
+    &.right {
+      transform: translateX(105%);
+      width: 106px;
+    }
+  }
+
+  .item {
+    display: block;
+    padding: 10px;
+    // background-color: var(--main-color);
+    // box-shadow: var(--main-box);
+    cursor: pointer;
+
+    @media (max-width: 640px) {
+      cursor: default;
+    }
+  }
+}

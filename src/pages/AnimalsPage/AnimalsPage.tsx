@@ -1,9 +1,11 @@
 import React from "react";
 
+import { PetDetails } from "@/components/Details/PetDetails";
 import { HeaderByAuth } from "@/components/HeaderByAuth";
 import { Input } from "@/components/ui";
 import { Button } from "@/components/ui";
 import { cn } from "@/lib/utils";
+import { useAppSelector } from "@/store";
 
 import { AnimalCards } from "./components/AnimalCards";
 import { AnimalFilter } from "./components/AnimalFilter";
@@ -11,6 +13,8 @@ import { AnimalFilter } from "./components/AnimalFilter";
 import styles from "./style.module.scss";
 
 const AnimalsPage = () => {
+  const { chosenId } = useAppSelector(state => state.pet);
+
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [isMove, setIsMove] = React.useState<boolean>(false);
 
@@ -37,6 +41,8 @@ const AnimalsPage = () => {
 
     setIsMove(false);
   }, [isOpen]);
+
+  if (chosenId) return <PetDetails />;
 
   return (
     <>

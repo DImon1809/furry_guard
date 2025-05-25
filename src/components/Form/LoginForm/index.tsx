@@ -91,6 +91,9 @@ const LoginFormWrapper = () => {
 export const LoginForm = () => {
   const [login] = useLoginMutation();
 
+  const [windowWidth, setWindowWidth] = React.useState<number>(window.innerWidth);
+  const [isMobile, setIsMobile] = React.useState<boolean>(false);
+
   const navigate = useNavigate();
 
   const initialValues: LoginType = {
@@ -139,8 +142,31 @@ export const LoginForm = () => {
     }
   };
 
+  React.useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    document.addEventListener("resize", handleResize);
+
+    return () => document.removeEventListener("resize", handleResize);
+  }, []);
+
+  React.useEffect(() => {
+    if (windowWidth <= 640) {
+      return setIsMobile(true);
+    }
+
+    setIsMobile(false);
+  }, [windowWidth]);
+
   return (
-    <FormWrapper initialValues={initialValues} onSubmit={handleSubmit} validate={validate}>
+    <FormWrapper
+      className={isMobile ? styles.mobile__form : ""}
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      validate={validate}
+    >
       <LoginFormWrapper />
     </FormWrapper>
   );

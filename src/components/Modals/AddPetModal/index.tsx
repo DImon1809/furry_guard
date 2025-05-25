@@ -1,4 +1,3 @@
-import React from "react";
 import { toast } from "react-toastify";
 
 import { FormikErrors, FormikValues, useFormikContext } from "formik";
@@ -6,7 +5,6 @@ import { FormikErrors, FormikValues, useFormikContext } from "formik";
 import { FormWrapper } from "@/components/Form/FormWrapper";
 import { Button, DatePicker, Input, Label, Selector } from "@/components/ui";
 import { Cross } from "@/components/ui";
-import { cn } from "@/lib/utils";
 import { clearFormikErrors, vNotEmpty } from "@/lib/validations";
 import type { Pet } from "@/models/Pet";
 import { ActivityLevel } from "@/models/Pet";
@@ -23,11 +21,11 @@ type AddPetForm = Omit<Pet, "gender" | "weight"> & {
 };
 
 type Props = {
-  className: string;
+  className?: string;
   closeModal: () => void;
 };
 
-const AddPetModalForm = ({ className, closeModal }: Props) => {
+const AddPetModalForm = ({ closeModal }: Props) => {
   const { values, setFieldValue, errors, submitForm } = useFormikContext<FormikValues>();
 
   const handleSubmit = () => {
@@ -35,7 +33,7 @@ const AddPetModalForm = ({ className, closeModal }: Props) => {
   };
 
   return (
-    <div className={cn(styles.pet__modal, className)}>
+    <>
       <div className={styles.cross__wrapper} onClick={closeModal}>
         <Cross />
       </div>
@@ -136,11 +134,11 @@ const AddPetModalForm = ({ className, closeModal }: Props) => {
       <Button className="w-52" onClick={handleSubmit}>
         Добавить питомца
       </Button>
-    </div>
+    </>
   );
 };
 
-export const AddPetModal = ({ className, closeModal }: Props) => {
+export const AddPetModal = ({ closeModal, className }: Props) => {
   const [addPet] = useAddPetMutation();
   const [getCurrent] = useLazyCurrentQuery();
 
@@ -224,8 +222,13 @@ export const AddPetModal = ({ className, closeModal }: Props) => {
   };
 
   return (
-    <FormWrapper initialValues={initialValues} onSubmit={handleSubmit} validate={validate}>
-      <AddPetModalForm className={className} closeModal={closeModal} />
+    <FormWrapper
+      className={className}
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      validate={validate}
+    >
+      <AddPetModalForm closeModal={closeModal} />
     </FormWrapper>
   );
 };

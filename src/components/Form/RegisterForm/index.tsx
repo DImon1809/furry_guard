@@ -15,6 +15,8 @@ import { FormWrapper } from "../FormWrapper";
 import { ConfidantInfo } from "./components/ConfidantInfo";
 import { UserInfo } from "./components/UserInfo";
 
+import styles from "./style.module.scss";
+
 type RegisterFromType = RegisterType & {
   repeatPassword: string;
 };
@@ -57,6 +59,9 @@ const RegisterFormWrapper = ({ children }: Props) => {
 
 export const RegisterForm = ({ children }: Props) => {
   const navigate = useNavigate();
+
+  const [windowWidth, setWindowWidth] = React.useState<number>(window.innerWidth);
+  const [isMobile, setIsMobile] = React.useState<boolean>(false);
 
   const [register] = useRegisterMutation();
 
@@ -120,8 +125,31 @@ export const RegisterForm = ({ children }: Props) => {
     }
   };
 
+  React.useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    document.addEventListener("resize", handleResize);
+
+    return () => document.removeEventListener("resize", handleResize);
+  }, []);
+
+  React.useEffect(() => {
+    if (windowWidth <= 640) {
+      return setIsMobile(true);
+    }
+
+    setIsMobile(false);
+  }, [windowWidth]);
+
   return (
-    <FormWrapper initialValues={initialValues} onSubmit={handleSubmit} validate={validate}>
+    <FormWrapper
+      className={isMobile ? styles.mobile__form : ""}
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      validate={validate}
+    >
       <RegisterFormWrapper>{children}</RegisterFormWrapper>
     </FormWrapper>
   );

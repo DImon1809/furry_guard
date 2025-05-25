@@ -1,6 +1,7 @@
 import type { Pet } from "./Pet";
 
 export type PetOfUser = Omit<Pet, "dateOfBirth"> & {
+  id: number;
   recommendations: string;
   ownerId: string;
   breedId: {
