@@ -1,5 +1,5 @@
 import { ArrowBack, Button } from "@/components/ui";
-import { Label, Selector } from "@/components/ui";
+import { CustomSelector, Label } from "@/components/ui";
 
 import styles from "./style.module.scss";
 
@@ -8,39 +8,57 @@ type Props = {
   handleOpenFilter: () => void;
 };
 
+type Options = { value: string; label: string };
+
 export const HospitalFilter = ({ isOpen, handleOpenFilter }: Props) => {
   return (
     <section className={styles.hospital__filter}>
       {isOpen && <ArrowBack handler={handleOpenFilter} />}
       <div>
         <Label htmlFor="rating">По рейтингу</Label>
-        <Selector id="rating" placeholder="Выберите рейтинг..." list={["Лучшие", "Худшие"]} />
+        <CustomSelector
+          id="rating"
+          placeholder="Выберите рейтинг..."
+          options={["Лучшие", "Худшие"].reduce(
+            (acc, prev) => [...acc, { value: prev, label: prev }],
+            [] as Options[],
+          )}
+        />
       </div>
 
       <div>
         <Label htmlFor="remoteness">Удаленность от дома</Label>
-        <Selector
+        <CustomSelector
           id="remoteness"
           placeholder="Выберите удаленность..."
-          list={["Ближе к дому", "Дальше от дома"]}
+          options={["Ближе к дому", "Дальше от дома"].reduce(
+            (acc, prev) => [...acc, { value: prev, label: prev }],
+            [] as Options[],
+          )}
         />
       </div>
 
       <div>
         <Label htmlFor="working-status">Рабочий статус</Label>
-        <Selector
+        <CustomSelector
           id="working-status"
           placeholder="Выберите статус..."
-          list={["Открытые", "Скоро закроются", "Закрытые"]}
+          options={["Открытые", "Скоро закроются", "Закрытые"].reduce(
+            (acc, prev) => [...acc, { value: prev, label: prev }],
+            [] as Options[],
+          )}
         />
       </div>
 
       <div>
         <Label htmlFor="hospital-sort">Сортировать</Label>
-        <Selector
+        <CustomSelector
           id="hospital-sort"
           placeholder="Выберите сортировку..."
-          list={["По алфавиту", "По возрастания", "По убыванию", "С конца"]}
+          options={["По алфавиту", "По возрастания", "По убыванию", "С конца"].reduce(
+            (acc, prev) => [...acc, { value: prev, label: prev }],
+            [] as Options[],
+          )}
         />
       </div>
 

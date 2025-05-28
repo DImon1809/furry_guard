@@ -18,7 +18,17 @@ export const petApi = serviceApi.injectEndpoints({
         method: "get",
       }),
     }),
+
+    searchBreed: builder.query<string[], string>({
+      query: pattern => ({
+        url: "/pet/searchBreed",
+        method: "get",
+        params: {
+          pattern,
+        },
+      }),
+    }),
   }),
 });
 
-export const { useAddPetMutation, useLazyGetOnePetQuery } = petApi;
+export const { useAddPetMutation, useLazyGetOnePetQuery, useSearchBreedQuery } = petApi;

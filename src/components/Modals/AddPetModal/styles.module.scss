@@ -8,3 +8,14 @@
   color: red;
   font-size: 14px;
 }
+
+.checkbox__wrapper {
+  display: flex;
+  gap: 12px;
+}
+
+.isNoBirth__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+}

@@ -20,7 +20,7 @@ enum paths {
 export const HeaderByAuth = () => {
   const dispacth = useAppDispatch();
 
-  const { firstName, lastName, surname } = useAppSelector(state => state.currentUser);
+  const { firstName } = useAppSelector(state => state.currentUser);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ export const HeaderByAuth = () => {
       <div className={styles.profile__wrapper}>
         <div className={styles.profile__avatar} onClick={goToProfile}></div>
         <div>
-          <span>{`${lastName} ${firstName} ${surname}`}</span>
+          <span>{`${firstName}`}</span>
         </div>
       </div>
       <div className={styles.buttons}>

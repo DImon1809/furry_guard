@@ -71,7 +71,7 @@ export const Selector = ({
   }, [data]);
 
   return (
-    <>
+    <div style={{ position: "relative" }}>
       <select style={{ display: "none" }} id={id}>
         {list.map(item => (
           <option key={item} value={item}>
@@ -106,11 +106,10 @@ export const Selector = ({
               );
             })}
         </ul>
-
         <div className={cn(styles.caret__wrapper, active && styles.active)}>
           <AiFillCaretRight size={16} />
         </div>
       </div>
-    </>
+    </div>
   );
 };

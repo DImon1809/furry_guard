@@ -1,8 +1,9 @@
-import React from "react";
 import { FaPaw } from "react-icons/fa6";
 
-import { matcherActivity } from "@/lib/matchers/matcherActivity";
-import { matcherGender } from "@/lib/matchers/matcherGender";
+import { format } from "date-fns";
+import { ru } from "date-fns/locale";
+
+import { matcherActivity, matcherGender } from "@/lib/matchers";
 import { cn } from "@/lib/utils";
 import { ActivityLevel } from "@/models/Pet";
 import { useAppSelector } from "@/store";
@@ -11,6 +12,12 @@ import styles from "./styles.module.scss";
 
 export const PetInfo = () => {
   const chosenPet = useAppSelector(state => state.pet);
+
+  const petDate = chosenPet.dateOfBirth
+    ? `Дата рождения: ${format(chosenPet.dateOfBirth, "dd.MM.yyyy", { locale: ru })}`
+    : chosenPet.age.year && chosenPet.age.month
+      ? `Возраст: ${chosenPet.age.year > 4 ? chosenPet.age.year + " лет" : chosenPet.age.year + " года"} ${chosenPet.age.month} месяцев `
+      : "Дата рождения и примерный возраст не указаны";
 
   return (
     <>
@@ -26,14 +33,16 @@ export const PetInfo = () => {
             <h4>{chosenPet.name}</h4>
             <p className={styles.status}>{`${chosenPet.gender === "М" ? "здоров" : "здорова"}`}</p>
           </div>
+
           <div className={styles.breed}>
-            {`${chosenPet.breed}`} <FaPaw />
+            {`Порода: ${chosenPet.breed}`} <FaPaw />
           </div>
+
           <div
             className={cn(styles.gender, chosenPet.gender === "М" ? styles.man : styles.woman)}
           >{`Пол: ${matcherGender(chosenPet.gender)}`}</div>
-          <div>{`${chosenPet.dateOfBirth || "Дата рождения не указана"}`}</div>
-          <div>{`Порода: ${chosenPet.breed}`}</div>
+          <div>{petDate}</div>
+
           <div>{`Текущий вес: ${chosenPet.weight} кг.`}</div>
           <div
             className={cn(

@@ -65,7 +65,7 @@ export const AnimalCard = ({ pet, nodeTime }: Props) => {
           <p className={styles.status}>здоров</p>
         </div>
         {/* <div>{`Дата рождения: ${format(new Date(), "dd.MM.yyyy", { locale: ru })}`}</div> */}
-        <div>Сидит дома</div>
+        <div style={{ width: "content-fit", float: "left" }}>Сидит дома</div>
       </div>
 
       <div className={styles.cross__wrapper}>

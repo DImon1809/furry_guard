@@ -1,9 +1,5 @@
-import { FaPaw } from "react-icons/fa6";
-
-import { Button, Label, Selector } from "@/components/ui";
+import { Button, CustomSelector, Label } from "@/components/ui";
 import { ArrowBack } from "@/components/ui";
-import { useModal } from "@/hooks/useModal";
-import { cn } from "@/lib/utils";
 
 import styles from "./style.module.scss";
 
@@ -12,56 +8,73 @@ type Props = {
   handleOpenFilter: () => void;
 };
 
-export const AnimalFilter = ({ isOpen, handleOpenFilter }: Props) => {
-  const openModal = useModal();
+type Options = { value: string; label: string };
 
+export const AnimalFilter = ({ isOpen, handleOpenFilter }: Props) => {
   return (
     <section className={styles.animal__filter}>
       {isOpen && <ArrowBack handler={handleOpenFilter} />}
       <div>
         <Label htmlFor="species">Вид животного</Label>
-        <Selector
+        <CustomSelector
           id="species"
           placeholder="Выберите вид животного..."
-          list={["Кот", "Собака", "Жираф", "Тигр"]}
+          options={["Кот", "Собака", "Жираф", "Тигр"].reduce(
+            (acc, prev) => [...acc, { value: prev, label: prev }],
+            [] as Options[],
+          )}
         />
       </div>
 
       <div>
         <Label htmlFor="pet__gender">Пол</Label>
-        <Selector
+        <CustomSelector
           id="pet__gender"
           placeholder="Выберите пол животного..."
-          list={["Мальчик", "Девочка"]}
+          options={["Мальчик", "Девочка"].reduce(
+            (acc, prev) => [...acc, { value: prev, label: prev }],
+            [] as Options[],
+          )}
         />
       </div>
 
       <div>
         <Label htmlFor="location">Место нахождения</Label>
-        <Selector id="location" placeholder="Выберите местохождение..." list={["Дома", "Гуляет"]} />
+        <CustomSelector
+          id="location"
+          placeholder="Выберите местохождение..."
+          options={["Дома", "Гуляет"].reduce(
+            (acc, prev) => [...acc, { value: prev, label: prev }],
+            [] as Options[],
+          )}
+        />
       </div>
 
       <div>
         <Label htmlFor="status">Статус</Label>
-        <Selector id="status" placeholder="Выберите статус..." list={["Здоров", "Болен"]} />
+        <CustomSelector
+          id="status"
+          placeholder="Выберите статус..."
+          options={["Здоров", "Болен"].reduce(
+            (acc, prev) => [...acc, { value: prev, label: prev }],
+            [] as Options[],
+          )}
+        />
       </div>
 
       <div>
         <Label htmlFor="animal-sort">Сортировать</Label>
-        <Selector
+        <CustomSelector
           id="animal-sort"
           placeholder="Выберите сортировку..."
-          list={["По алфавиту", "По возрастания", "По убыванию", "С конца"]}
+          options={["По алфавиту", "По возрастанию", "По убыванию", "С конца"].reduce(
+            (acc, prev) => [...acc, { value: prev, label: prev }],
+            [] as Options[],
+          )}
         />
       </div>
 
-      <div className={styles.button__group}>
-        <Button className={cn("w-44")} onClick={() => openModal("addPet")}>
-          Добавить питомца
-          <FaPaw />
-        </Button>
-        <Button className="w-32">Показать</Button>
-      </div>
+      <Button className="w-64 !mx-auto">Показать результаты</Button>
     </section>
   );
 };
