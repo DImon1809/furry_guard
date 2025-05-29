@@ -1,0 +1,18 @@
+.file__uploader {
+  width: 400px;
+  height: 60px;
+  border-radius: 12px;
+  border: 2px solid #dadada;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-shadow: var(--main-shadow);
+  cursor: pointer;
+  margin-top: 20px;
+
+  @media (max-width: 640px) {
+    width: 260px;
+    cursor: default;
+  }
+}

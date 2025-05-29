@@ -4,9 +4,10 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AboutProject } from "./pages/AboutProject";
 import { AnimalsPage } from "./pages/AnimalsPage";
 import { AuthPage } from "./pages/AuthPage";
-import { HospitalsPage } from "./pages/HospitalsPage";
+// import { HospitalsPage } from "./pages/HospitalsPage";
 import { NotFound } from "./pages/NotFound";
 import { ProfilePage } from "./pages/ProfilePage";
+import { WantToWalkPage } from "./pages/WantToWalk";
 import { setAuth } from "./store/features/auth/authSlice";
 import { useLazyCurrentQuery } from "./store/features/currentUser/currentUserApi";
 import { AUTH_TYPES } from "./models";
@@ -36,7 +37,8 @@ export const Root = () => {
         <Routes>
           <Route path="/" element={<AnimalsPage />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/hospitals" element={<HospitalsPage />} />
+          <Route path="/want-to-walk" element={<WantToWalkPage />} />
+          {/* <Route path="/hospitals" element={<HospitalsPage />} /> */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       ) : (

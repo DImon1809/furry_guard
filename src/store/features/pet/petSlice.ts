@@ -1,11 +1,12 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { PetDetails } from "@/models/Pet";
+import type { Pet } from "@/models/Pet";
+import { WalkingStatusDto } from "@/models/Pet";
 
 import { petApi } from "./petApi";
 
-const initialState: PetDetails & { chosenId: number | null } = {
+const initialState: Omit<Pet, "id"> & { chosenId: number | null } = {
   chosenId: null,
   name: "",
   breed: "",
@@ -19,6 +20,9 @@ const initialState: PetDetails & { chosenId: number | null } = {
   dateOfBirth: null,
   weight: 0,
   recommendations: "",
+  petWalkingStatus: WalkingStatusDto.WANT_HOME,
+  walks: [],
+  files: [],
 };
 
 export const petSlice = createSlice({
@@ -35,7 +39,7 @@ export const petSlice = createSlice({
   extraReducers: builder => {
     builder.addMatcher(
       petApi.endpoints.getOnePet.matchFulfilled,
-      (state, action: PayloadAction<PetDetails>) => {
+      (state, action: PayloadAction<Pet>) => {
         return { ...state, ...action.payload };
       },
     );

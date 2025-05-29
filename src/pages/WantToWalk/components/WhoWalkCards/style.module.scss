@@ -1,4 +1,4 @@
-.animals__list {
+.who__walk__list {
   width: fit-content;
   min-width: 400px;
   display: flex;
@@ -13,19 +13,20 @@
   }
 }
 
-.animal__card {
+.who__walk__card {
   width: 400px;
-  height: 120px;
+  max-height: 154px;
   padding: 20px 10px;
   border-radius: 12px;
   box-shadow: var(--main-shadow);
-  gap: var(--space-m);
   position: relative;
   cursor: pointer;
   display: none;
+  gap: 10px;
 
   &.move {
     display: flex;
+    flex-direction: column;
     animation: 0.2s 0s linear animator;
   }
 
@@ -57,7 +58,12 @@
     cursor: default;
   }
 
-  .animal__avatar {
+  .top {
+    display: flex;
+    gap: var(--space-m);
+  }
+
+  .who__walk__avatar {
     width: 52px;
     height: 52px;
     transition: opacity 0.3s ease;
@@ -71,13 +77,12 @@
     }
   }
 
-  .animal__description {
+  .who__walk__description {
     display: flex;
     flex-direction: column;
-    gap: 20px;
     align-items: flex-start;
 
-    .nickname__status {
+    .nickname {
       display: flex;
       align-items: center;
       gap: var(--space-2xs);
@@ -87,29 +92,41 @@
         font-weight: 600;
         transition: all 0.3s ease;
       }
+    }
 
-      .status {
-        color: green;
+    .breed {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .gender {
+      &.man {
+        color: #5dade2;
+      }
+
+      &.woman {
+        color: #ff69b4;
       }
     }
   }
 
-  .cross__wrapper {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-  }
-
-  .walk__status {
-    width: 100%;
-    height: 36px;
+  .owner__info {
     display: flex;
     align-items: center;
-    gap: 10px;
-    color: green;
+    justify-content: flex-end;
+    gap: 6px;
 
-    &.want__walk {
-      color: rgb(221, 146, 6);
+    .owner__avatar {
+      width: 23px;
+      height: 23px;
+      background-color: rgba(128, 128, 128, 0.5);
+      border-radius: 50%;
+      cursor: pointer;
+
+      @media (max-width: 640px) {
+        cursor: default;
+      }
     }
   }
 }

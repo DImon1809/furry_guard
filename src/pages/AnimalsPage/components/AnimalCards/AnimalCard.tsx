@@ -1,13 +1,15 @@
 import React from "react";
+import { FaToggleOff, FaToggleOn } from "react-icons/fa";
 import { toast } from "react-toastify";
 
-// import { format } from "date-fns";
-// import { ru } from "date-fns/locale";
 import { Cross } from "@/components/ui";
+import { matcherWalkStatus } from "@/lib/matchers";
 import { cn } from "@/lib/utils";
 import type { PetOfUser } from "@/models/CurrentUser";
+import { WalkingStatusDto } from "@/models/Pet";
 import { useAppDispatch } from "@/store";
-import { useLazyGetOnePetQuery } from "@/store/features/pet/petApi";
+import { useLazyCurrentQuery } from "@/store/features/currentUser/currentUserApi";
+import { useLazyGetOnePetQuery, useToggleWalkStatusMutation } from "@/store/features/pet/petApi";
 import { choosePet } from "@/store/features/pet/petSlice";
 
 import styles from "./style.module.scss";
@@ -20,6 +22,9 @@ type Props = {
 export const AnimalCard = ({ pet, nodeTime }: Props) => {
   const dispatch = useAppDispatch();
 
+  const [toggleStatus] = useToggleWalkStatusMutation();
+  const [getUserData] = useLazyCurrentQuery();
+
   const [getOnePet] = useLazyGetOnePetQuery();
 
   const [isAnimation, setIsAnimation] = React.useState<boolean>(false);
@@ -28,6 +33,44 @@ export const AnimalCard = ({ pet, nodeTime }: Props) => {
     try {
       await getOnePet({ id: pet.id }).unwrap();
       dispatch(choosePet(pet.id));
+    } catch {
+      toast.error("Что-то пошло не так", {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  const hanldleToggleWalkStatus = async (event: React.MouseEvent<HTMLDivElement>) => {
+    try {
+      event.stopPropagation();
+
+      await toggleStatus({
+        petId: pet.id,
+        petWalkingStatus:
+          pet.petWalkingStatus === WalkingStatusDto.WANT_HOME
+            ? WalkingStatusDto.WANT_TO_WALK
+            : WalkingStatusDto.WANT_HOME,
+      }).unwrap();
+
+      await getUserData().unwrap();
+
+      toast.success("Поставьте пять плз", {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } catch {
       toast.error("Что-то пошло не так", {
         position: "top-right",
@@ -64,8 +107,21 @@ export const AnimalCard = ({ pet, nodeTime }: Props) => {
           <h3>{pet.name}</h3>
           <p className={styles.status}>здоров</p>
         </div>
-        {/* <div>{`Дата рождения: ${format(new Date(), "dd.MM.yyyy", { locale: ru })}`}</div> */}
-        <div style={{ width: "content-fit", float: "left" }}>Сидит дома</div>
+
+        <div
+          className={cn(
+            styles.walk__status,
+            pet.petWalkingStatus === WalkingStatusDto.WANT_TO_WALK && styles.want__walk,
+          )}
+          onClick={hanldleToggleWalkStatus}
+        >
+          {`Текущий статус: ${matcherWalkStatus(pet.petWalkingStatus)}`}
+          {pet.petWalkingStatus === WalkingStatusDto.WANT_HOME ? (
+            <FaToggleOff size={26} />
+          ) : (
+            <FaToggleOn size={26} />
+          )}
+        </div>
       </div>
 
       <div className={styles.cross__wrapper}>

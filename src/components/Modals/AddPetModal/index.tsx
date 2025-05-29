@@ -13,7 +13,7 @@ import { ActivityLevel } from "@/models/Pet";
 import { useLazyCurrentQuery } from "@/store/features/currentUser/currentUserApi";
 import { useAddPetMutation } from "@/store/features/pet/petApi";
 
-import styles from "./styles.module.scss";
+import styles from "./style.module.scss";
 
 // Todo посмотреть тип
 type AddPetForm = Omit<Pet, "gender" | "weight" | "age"> & {
@@ -238,9 +238,13 @@ export const AddPetModal = ({ closeModal, className }: AddPetModalProps) => {
 
     if (!isNoBirth) {
       errors.dateOfBirth = vNotEmpty(dateOfBirth);
+      errors.year = undefined;
+      errors.month = undefined;
+      errors.week = undefined;
     }
 
     if (isNoBirth) {
+      errors.dateOfBirth = undefined;
       if (String(year).split("")[0] === "0") errors.year = "Некорректное число";
       if (String(month).split("")[0] === "0") errors.month = "Некорректное число";
       if (String(week).split("")[0] === "0") errors.week = "Некорректное число";

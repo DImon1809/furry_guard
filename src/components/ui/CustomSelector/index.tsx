@@ -8,10 +8,11 @@ type Options = {
 };
 
 type Props = {
-  id: string;
+  id?: string;
   options: Options[];
   onChange?: (val: Options) => void;
-  placeholder: string;
+  placeholder?: string;
+  defaultValue?: Options;
 };
 
 const selectorStyles: StylesConfig<Options, false, GroupBase<Options>> = {
@@ -59,7 +60,7 @@ const selectorStyles: StylesConfig<Options, false, GroupBase<Options>> = {
   }),
 };
 
-export const CustomSelector = ({ id, options, placeholder, onChange }: Props) => {
+export const CustomSelector = ({ id, options, placeholder, defaultValue, onChange }: Props) => {
   const [selectedOption, setSelectedOption] = React.useState<Options | null>(null);
 
   return (
@@ -67,6 +68,7 @@ export const CustomSelector = ({ id, options, placeholder, onChange }: Props) =>
       id={id}
       styles={selectorStyles}
       options={options}
+      defaultValue={defaultValue}
       value={selectedOption}
       onChange={event => {
         const newValue = {

@@ -6,6 +6,7 @@ export { Checkbox } from "./checkbox";
 export { Cross } from "./Cross";
 export { CustomSelector } from "./CustomSelector";
 export { DatePicker } from "./DatePicker";
+export { FileUploader } from "./FileUploader";
 export { Heart } from "./Heart";
 export { Input } from "./input";
 export { Label } from "./label";

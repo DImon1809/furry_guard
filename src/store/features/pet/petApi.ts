@@ -1,5 +1,5 @@
 import type { Pet } from "@/models/Pet";
-import type { PetDetails } from "@/models/Pet";
+import { WalkingStatusDto } from "@/models/Pet";
 import { serviceApi } from "@/store/serviceApi";
 
 export const petApi = serviceApi.injectEndpoints({
@@ -12,10 +12,52 @@ export const petApi = serviceApi.injectEndpoints({
       }),
     }),
 
-    getOnePet: builder.query<PetDetails, { id: number }>({
+    getOnePet: builder.query<Pet, { id: number }>({
       query: ({ id }) => ({
         url: `/pet/${id}`,
         method: "get",
+      }),
+    }),
+
+    toggleWalkStatus: builder.mutation<
+      void,
+      { petId: number; petWalkingStatus: keyof typeof WalkingStatusDto }
+    >({
+      query: body => ({
+        url: "/pet/walkingStatus",
+        method: "post",
+        body,
+      }),
+    }),
+
+    getAllWhoWalk: builder.mutation<
+      Array<
+        Pet & {
+          user: {
+            id: number;
+            firstName: string;
+          };
+        }
+      >,
+      void
+    >({
+      query: () => ({
+        url: "/pet/allWithStatus",
+        method: "post",
+        body: {
+          petWalkingStatus: WalkingStatusDto.WANT_TO_WALK,
+        },
+      }),
+    }),
+
+    loadFile: builder.mutation<
+      void,
+      { fileName: string; fileType: string; content: string; petId: number }
+    >({
+      query: body => ({
+        url: "/file",
+        method: "post",
+        body,
       }),
     }),
 
@@ -31,4 +73,11 @@ export const petApi = serviceApi.injectEndpoints({
   }),
 });
 
-export const { useAddPetMutation, useLazyGetOnePetQuery, useSearchBreedQuery } = petApi;
+export const {
+  useAddPetMutation,
+  useLazyGetOnePetQuery,
+  useToggleWalkStatusMutation,
+  useGetAllWhoWalkMutation,
+  useLoadFileMutation,
+  useSearchBreedQuery,
+} = petApi;

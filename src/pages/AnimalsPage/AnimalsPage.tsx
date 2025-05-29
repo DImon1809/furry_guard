@@ -59,12 +59,12 @@ const AnimalsPage = () => {
             </Button>
           </div>
           <div className={cn(styles.filter__wrapper, isMove && styles.move)}>
-            <AnimalFilter isOpen={isOpen} handleOpenFilter={handleCloseFilter} />
+            <AnimalFilter isOpen={isOpen} handleCloseFilter={handleCloseFilter} />
           </div>
         </div>
 
         <section className={styles.animals__section}>
-          <Input type="text" id="surname" placeholder="Поиск..." className="!px-2" />
+          <Input type="text" placeholder="Поиск..." className="!px-2" />
 
           <AnimalCards />
           <Button className="w-56 !mt-4" onClick={() => openModal("addPet")}>

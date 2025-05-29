@@ -7,7 +7,7 @@ import { useSearchBreedQuery } from "@/store/features/pet/petApi";
 import { Input } from "../input";
 import { Label } from "../label";
 
-import styles from "./styles.module.scss";
+import styles from "./style.module.scss";
 
 type Props = {
   setValue: (val: string) => void;
@@ -70,8 +70,9 @@ export const SearchBreed = ({ setValue }: Props) => {
             )}
           >
             {breeds?.length ? (
-              breeds.map(b => (
+              breeds.map((b, i) => (
                 <div
+                  key={i}
                   className={styles.breed}
                   onMouseDown={event => event.preventDefault()}
                   onClick={() => {

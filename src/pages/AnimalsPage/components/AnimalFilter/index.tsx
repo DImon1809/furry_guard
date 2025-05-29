@@ -5,15 +5,15 @@ import styles from "./style.module.scss";
 
 type Props = {
   isOpen: boolean;
-  handleOpenFilter: () => void;
+  handleCloseFilter: () => void;
 };
 
 type Options = { value: string; label: string };
 
-export const AnimalFilter = ({ isOpen, handleOpenFilter }: Props) => {
+export const AnimalFilter = ({ isOpen, handleCloseFilter }: Props) => {
   return (
     <section className={styles.animal__filter}>
-      {isOpen && <ArrowBack handler={handleOpenFilter} />}
+      {isOpen && <ArrowBack handler={handleCloseFilter} />}
       <div>
         <Label htmlFor="species">Вид животного</Label>
         <CustomSelector

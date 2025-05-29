@@ -4,12 +4,12 @@ import { HeaderByAuth } from "@/components/HeaderByAuth";
 import { Button, Input } from "@/components/ui";
 import { cn } from "@/lib/utils";
 
-import { HospitalCards } from "./components/HospitalCards";
-import { HospitalFilter } from "./components/HospitalFilter";
+import { WhoWalkCards } from "./components/WhoWalkCards";
+import { WhoWalkFilter } from "./components/WhoWalkFilter";
 
 import styles from "./style.module.scss";
 
-const HospitalsPage = () => {
+const WantToWalkPage = () => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [isMove, setIsMove] = React.useState<boolean>(false);
 
@@ -37,6 +37,7 @@ const HospitalsPage = () => {
     setIsMove(false);
   }, [isOpen]);
 
+  // Todo выполнить рефакторинг
   return (
     <>
       <HeaderByAuth />
@@ -48,17 +49,18 @@ const HospitalsPage = () => {
             </Button>
           </div>
           <div className={cn(styles.filter__wrapper, isMove && styles.move)}>
-            <HospitalFilter isOpen={isOpen} handleOpenFilter={handleCloseFilter} />
+            <WhoWalkFilter isOpen={isOpen} handleOpenFilter={handleCloseFilter} />
           </div>
         </div>
 
-        <section className={styles.hospitals__section}>
-          <Input type="text" id="surname" placeholder="Поиск..." className="!px-2" />
-          <HospitalCards />
+        <section className={styles.animals__section}>
+          <Input type="text" placeholder="Поиск..." className="!px-2" />
+
+          <WhoWalkCards />
         </section>
       </section>
     </>
   );
 };
 
-export default HospitalsPage;
+export default WantToWalkPage;

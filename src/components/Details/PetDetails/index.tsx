@@ -8,7 +8,7 @@ import { ActivityInfo } from "./components/ActivityInfo";
 import { PetInfo } from "./components/PetInfo";
 import { ToggleInfo } from "./components/ToggleInfo/ToggleInfo";
 
-import styles from "./styles.module.scss";
+import styles from "./style.module.scss";
 
 export enum Directions {
   "LEFT" = "LEFT",

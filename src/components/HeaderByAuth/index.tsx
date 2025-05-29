@@ -1,4 +1,5 @@
-import { FaRegHospital } from "react-icons/fa";
+// import { FaRegHospital } from "react-icons/fa";
+import { FaDog } from "react-icons/fa6";
 import { IoMdExit } from "react-icons/io";
 import { PiDogDuotone } from "react-icons/pi";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -15,6 +16,7 @@ enum paths {
   animals = "/",
   profile = "/profile",
   hospitals = "/hospitals",
+  wantToWalk = "/want-to-walk",
 }
 
 export const HeaderByAuth = () => {
@@ -35,8 +37,12 @@ export const HeaderByAuth = () => {
     navigate(paths.animals);
   };
 
-  const goToHospitals = () => {
-    navigate(paths.hospitals);
+  // const goToHospitals = () => {
+  //   navigate(paths.hospitals);
+  // };
+
+  const gotToWantToWalk = () => {
+    navigate(paths.wantToWalk);
   };
 
   // todo переделать
@@ -58,8 +64,11 @@ export const HeaderByAuth = () => {
         <Button className="w-32" variant="outline" onClick={gotToAnimals}>
           Мои животные
         </Button>
-        <Button className="w-36" variant="outline" onClick={goToHospitals}>
+        {/* <Button className="w-36" variant="outline" onClick={goToHospitals}>
           Выбрать клинику
+        </Button> */}
+        <Button className="w-36" variant="outline" onClick={gotToWantToWalk}>
+          Кто хочет гулять
         </Button>
         <Button className="w-20" variant="outline" onClick={handleLogOut}>
           Выход
@@ -75,10 +84,15 @@ export const HeaderByAuth = () => {
           />
         </div>
         <div>
-          <FaRegHospital
+          {/* <FaRegHospital
             size={26}
             color={currentLocation === paths.hospitals ? "#008000" : "#f3f4f6"}
             onClick={goToHospitals}
+          /> */}
+          <FaDog
+            size={26}
+            color={currentLocation === paths.wantToWalk ? "#008000" : "#f3f4f6"}
+            onClick={gotToWantToWalk}
           />
         </div>
 
