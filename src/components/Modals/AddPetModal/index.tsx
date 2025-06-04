@@ -8,7 +8,7 @@ import { Button, Checkbox, CustomSelector, DatePicker, Input, Label } from "@/co
 import { Cross, SearchBreed } from "@/components/ui";
 import { matcherActivity, matcherGender } from "@/lib/matchers";
 import { clearFormikErrors, vNotEmpty } from "@/lib/validations";
-import type { Pet } from "@/models/Pet";
+import type { Pet, SendPet } from "@/models/Pet";
 import { ActivityLevel } from "@/models/Pet";
 import { useLazyCurrentQuery } from "@/store/features/currentUser/currentUserApi";
 import { useAddPetMutation } from "@/store/features/pet/petApi";
@@ -16,7 +16,18 @@ import { useAddPetMutation } from "@/store/features/pet/petApi";
 import styles from "./style.module.scss";
 
 // Todo посмотреть тип
-type AddPetForm = Omit<Pet, "gender" | "weight" | "age"> & {
+type AddPetForm = Omit<
+  Pet,
+  | "id"
+  | "gender"
+  | "weight"
+  | "age"
+  | "files"
+  | "walks"
+  | "petWalkingStatus"
+  | "recommendations"
+  | "hasRecommendations"
+> & {
   gender: Pet | string;
   kilo: number;
   gramm: number;
@@ -71,7 +82,7 @@ const AddPetModalForm = ({ isNoBirth, closeModal, setIsNoBirth }: AddPetModalFor
         <Label htmlFor="gender">Пол</Label>
         <CustomSelector
           id="gender"
-          placeholder="Выберите местохождение..."
+          placeholder="Выберите местонахождение..."
           options={["М", "Ж"].reduce(
             (acc, prev) => [
               ...acc,
@@ -113,7 +124,13 @@ const AddPetModalForm = ({ isNoBirth, closeModal, setIsNoBirth }: AddPetModalFor
               value={values.year}
               onChange={event => {
                 const val = event.target.value;
-                if (Number(val) >= 0) setFieldValue("year", event.target.value, !!errors.year);
+
+                if (/^\d{0,3}$/.test(val)) {
+                  const cleaned = val.replace(/^0+(\d)/, "$1");
+
+                  if (cleaned === "" || Number(cleaned) <= 100)
+                    setFieldValue("year", cleaned, !!errors.year);
+                }
               }}
             />
             <div className={styles.error__message}>{`${errors.year || ""}`}</div>
@@ -128,7 +145,12 @@ const AddPetModalForm = ({ isNoBirth, closeModal, setIsNoBirth }: AddPetModalFor
               value={values.month}
               onChange={event => {
                 const val = event.target.value;
-                if (Number(val) >= 0) setFieldValue("month", event.target.value, !!errors.month);
+                if (/^\d{0,2}$/.test(val)) {
+                  const cleaned = val.replace(/^0+(\d)/, "$1");
+
+                  if (cleaned === "" || Number(cleaned) <= 12)
+                    setFieldValue("month", cleaned, !!errors.month);
+                }
               }}
             />
             <div className={styles.error__message}>{`${errors.month || ""}`}</div>
@@ -143,7 +165,13 @@ const AddPetModalForm = ({ isNoBirth, closeModal, setIsNoBirth }: AddPetModalFor
               value={values.week}
               onChange={event => {
                 const val = event.target.value;
-                if (Number(val) >= 0) setFieldValue("week", event.target.value, !!errors.week);
+
+                if (/^\d{0,2}$/.test(val)) {
+                  const cleaned = val.replace(/^0+(\d)/, "$1");
+
+                  if (cleaned === "" || Number(cleaned) <= 52)
+                    setFieldValue("week", cleaned, !!errors.week);
+                }
               }}
             />
             <div className={styles.error__message}>{`${errors.week || ""}`}</div>
@@ -163,7 +191,12 @@ const AddPetModalForm = ({ isNoBirth, closeModal, setIsNoBirth }: AddPetModalFor
           value={values.kilo}
           onChange={event => {
             const val = event.target.value;
-            if (Number(val) >= 0) setFieldValue("kilo", event.target.value, !!errors.kilo);
+
+            if (/^\d{0,2}$/.test(val)) {
+              const cleaned = val.replace(/^0+(\d)/, "$1");
+
+              if (Number(cleaned) >= 0) setFieldValue("kilo", cleaned, !!errors.kilo);
+            }
           }}
         />
         <div className={styles.error__message}>{`${errors.kilo || ""}`}</div>
@@ -178,7 +211,12 @@ const AddPetModalForm = ({ isNoBirth, closeModal, setIsNoBirth }: AddPetModalFor
           value={values.gramm}
           onChange={event => {
             const val = event.target.value;
-            if (Number(val) >= 0) setFieldValue("gramm", event.target.value, !!errors.gramm);
+
+            if (/^\d{0,3}$/.test(val)) {
+              const cleaned = val.replace(/^0+(\d)/, "$1");
+
+              if (Number(cleaned) >= 0) setFieldValue("gramm", cleaned, !!errors.gramm);
+            }
           }}
         />
         <div className={styles.error__message}>{`${errors.gramm || ""}`}</div>
@@ -225,8 +263,7 @@ export const AddPetModal = ({ closeModal, className }: AddPetModalProps) => {
   const validate = (values: AddPetForm): FormikErrors<AddPetForm> => {
     const errors: FormikErrors<AddPetForm> = {};
 
-    const { name, breed, gender, dateOfBirth, year, month, week, kilo, gramm, activityLevel } =
-      values;
+    const { name, breed, gender, dateOfBirth, kilo, gramm, activityLevel } = values;
 
     errors.name = vNotEmpty(name);
     errors.breed = vNotEmpty(breed);
@@ -238,27 +275,27 @@ export const AddPetModal = ({ closeModal, className }: AddPetModalProps) => {
 
     if (!isNoBirth) {
       errors.dateOfBirth = vNotEmpty(dateOfBirth);
-      errors.year = undefined;
-      errors.month = undefined;
-      errors.week = undefined;
+      // errors.year = undefined;
+      // errors.month = undefined;
+      // errors.week = undefined;
     }
 
     if (isNoBirth) {
       errors.dateOfBirth = undefined;
-      if (String(year).split("")[0] === "0") errors.year = "Некорректное число";
-      if (String(month).split("")[0] === "0") errors.month = "Некорректное число";
-      if (String(week).split("")[0] === "0") errors.week = "Некорректное число";
+      // if (String(year).split("")[0] === "0") errors.year = "Некорректное число";
+      // if (String(month).split("")[0] === "0") errors.month = "Некорректное число";
+      // if (String(week).split("")[0] === "0") errors.week = "Некорректное число";
     }
 
-    if (String(kilo).split("")[0] === "0") errors.kilo = "Некорректное число";
-    if (String(gramm).split("")[0] === "0") errors.gramm = "Некорректное число";
+    // if (String(kilo).split("")[0] === "0") errors.kilo = "Некорректное число";
+    // if (String(gramm).split("")[0] === "0") errors.gramm = "Некорректное число";
 
     return clearFormikErrors(errors);
   };
 
   const handleSubmit = async (values: AddPetForm) => {
     try {
-      const data: Pet = {
+      const data: SendPet = {
         name: values.name,
         breed: values.breed,
         gender: values.gender as Pet["gender"],

@@ -1,6 +1,7 @@
 import React from "react";
 import { AiFillCaretRight } from "react-icons/ai";
 
+import { useCheckWidth } from "@/hooks/useCheckWidth";
 import { cn } from "@/lib/utils";
 
 import styles from "./style.module.scss";
@@ -24,8 +25,7 @@ export const Selector = ({
   const [data, setData] = React.useState<string>("");
   const [active, setActive] = React.useState<boolean>(false);
 
-  const [windowWidth, setWindowWidth] = React.useState<number>(window.innerWidth);
-  const [isMobile, setIsMobile] = React.useState<boolean>(false);
+  const [isMobile] = useCheckWidth();
 
   const handleActiveSelect = () => {
     setActive(state => !state);
@@ -47,24 +47,6 @@ export const Selector = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-  React.useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    document.addEventListener("resize", handleResize);
-
-    return () => document.removeEventListener("resize", handleResize);
-  }, []);
-
-  React.useEffect(() => {
-    if (windowWidth <= 640) {
-      return setIsMobile(true);
-    }
-
-    setIsMobile(false);
-  }, [windowWidth]);
 
   React.useEffect(() => {
     if (data && onChange) onChange(data);

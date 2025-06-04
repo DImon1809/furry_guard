@@ -24,6 +24,8 @@ export type Pet = {
   activityLevel: ActivityLevel | null;
   recommendations: string;
   petWalkingStatus: WalkingStatusDto;
+  hasRecommendations: boolean;
+  vaccinations: string;
   walks: string[];
   files: {
     content: string;
@@ -34,6 +36,21 @@ export type Pet = {
   }[];
 };
 
-export type PetDetails = Pet & {
-  recommendations: string;
+export type PetCard = Omit<Pet, "id"> & { petId: number } & {
+  user: {
+    id: number;
+    firstName: string;
+  };
+};
+
+export type SendPet = Omit<
+  Pet,
+  "id" | "files" | "walks" | "petWalkingStatus" | "recommendations" | "hasRecommendations"
+>;
+
+export type VaccinationType = {
+  fileName: string;
+  fileType: string;
+  content: string;
+  petId: number;
 };

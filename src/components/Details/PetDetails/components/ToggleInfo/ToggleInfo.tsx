@@ -2,18 +2,18 @@ import React, { SetStateAction } from "react";
 
 import { cn } from "@/lib/utils";
 
-import type { Direction } from "../..";
-import { Directions } from "../..";
+import type { Pages } from "../..";
+import { PageMap } from "../..";
 
 import styles from "./style.module.scss";
 
 type Props = {
-  direction: Direction;
-  setDirection: React.Dispatch<SetStateAction<Direction>>;
+  direction: Pages;
+  setDirection: React.Dispatch<SetStateAction<Pages>>;
 };
 
 export const ToggleInfo = ({ direction, setDirection }: Props) => {
-  const handleToggle = (direction: Direction) => {
+  const handleToggle = (direction: Pages) => {
     setDirection(direction);
   };
 
@@ -22,15 +22,27 @@ export const ToggleInfo = ({ direction, setDirection }: Props) => {
       <div
         className={cn(
           styles.toggle__border,
-          direction === Directions.LEFT ? styles.left : styles.right,
+          direction === PageMap.INFO
+            ? styles.info
+            : direction === PageMap.FILES
+              ? styles.files
+              : direction === PageMap.VACCINATIONS
+                ? styles.vaccinations
+                : styles.activity,
         )}
       ></div>
-      <li className={styles.item} onClick={() => handleToggle(Directions.LEFT)}>
+      <li className={styles.item} onClick={() => handleToggle(PageMap.INFO)}>
         Профиль
       </li>
-      <li className={styles.item} onClick={() => handleToggle(Directions.RIGHT)}>
-        Активности
+      <li className={styles.item} onClick={() => handleToggle(PageMap.FILES)}>
+        Файлы
       </li>
+      <li className={styles.item} onClick={() => handleToggle(PageMap.VACCINATIONS)}>
+        Прививки
+      </li>
+      {/* <li className={styles.item} onClick={() => handleToggle(PageMap.ACTIVITY)}>
+        Активности
+      </li> */}
     </ul>
   );
 };

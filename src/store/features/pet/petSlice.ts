@@ -20,6 +20,8 @@ const initialState: Omit<Pet, "id"> & { chosenId: number | null } = {
   dateOfBirth: null,
   weight: 0,
   recommendations: "",
+  hasRecommendations: false,
+  vaccinations: "",
   petWalkingStatus: WalkingStatusDto.WANT_HOME,
   walks: [],
   files: [],

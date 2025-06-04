@@ -1,10 +1,10 @@
-import type { Pet } from "@/models/Pet";
+import type { Pet, PetCard, SendPet, VaccinationType } from "@/models/Pet";
 import { WalkingStatusDto } from "@/models/Pet";
 import { serviceApi } from "@/store/serviceApi";
 
 export const petApi = serviceApi.injectEndpoints({
   endpoints: builder => ({
-    addPet: builder.mutation<void, Pet>({
+    addPet: builder.mutation<void, SendPet>({
       query: data => ({
         url: "/pet",
         method: "post",
@@ -30,17 +30,7 @@ export const petApi = serviceApi.injectEndpoints({
       }),
     }),
 
-    getAllWhoWalk: builder.mutation<
-      Array<
-        Pet & {
-          user: {
-            id: number;
-            firstName: string;
-          };
-        }
-      >,
-      void
-    >({
+    getAllWhoWalk: builder.mutation<PetCard[], void>({
       query: () => ({
         url: "/pet/allWithStatus",
         method: "post",
@@ -50,10 +40,7 @@ export const petApi = serviceApi.injectEndpoints({
       }),
     }),
 
-    loadFile: builder.mutation<
-      void,
-      { fileName: string; fileType: string; content: string; petId: number }
-    >({
+    loadFile: builder.mutation<void, VaccinationType>({
       query: body => ({
         url: "/file",
         method: "post",
@@ -61,9 +48,26 @@ export const petApi = serviceApi.injectEndpoints({
       }),
     }),
 
+    getAllVaccinations: builder.query<VaccinationType[], number>({
+      query: petId => ({
+        url: `/file/${petId}`,
+        method: "get",
+      }),
+    }),
+
     searchBreed: builder.query<string[], string>({
       query: pattern => ({
         url: "/pet/searchBreed",
+        method: "get",
+        params: {
+          pattern,
+        },
+      }),
+    }),
+
+    searchMetro: builder.query<string[], string>({
+      query: pattern => ({
+        url: "/metro/searchMetro",
         method: "get",
         params: {
           pattern,
@@ -79,5 +83,7 @@ export const {
   useToggleWalkStatusMutation,
   useGetAllWhoWalkMutation,
   useLoadFileMutation,
+  useGetAllVaccinationsQuery,
   useSearchBreedQuery,
+  useSearchMetroQuery,
 } = petApi;

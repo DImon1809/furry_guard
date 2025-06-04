@@ -6,6 +6,7 @@ import { FormikErrors, useFormikContext } from "formik";
 
 import { Button } from "@/components/ui";
 import { ArrowBack } from "@/components/ui";
+import { useCheckWidth } from "@/hooks/useCheckWidth";
 import { clearFormikErrors, vEmail, vNotEmpty } from "@/lib/validations";
 import { RegisterType } from "@/models/AuthTypes";
 import { useRegisterMutation } from "@/store/features/auth/authApi";
@@ -60,8 +61,7 @@ const RegisterFormWrapper = ({ children }: Props) => {
 export const RegisterForm = ({ children }: Props) => {
   const navigate = useNavigate();
 
-  const [windowWidth, setWindowWidth] = React.useState<number>(window.innerWidth);
-  const [isMobile, setIsMobile] = React.useState<boolean>(false);
+  const [isMobile] = useCheckWidth();
 
   const [register] = useRegisterMutation();
 
@@ -124,24 +124,6 @@ export const RegisterForm = ({ children }: Props) => {
       });
     }
   };
-
-  React.useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    document.addEventListener("resize", handleResize);
-
-    return () => document.removeEventListener("resize", handleResize);
-  }, []);
-
-  React.useEffect(() => {
-    if (windowWidth <= 640) {
-      return setIsMobile(true);
-    }
-
-    setIsMobile(false);
-  }, [windowWidth]);
 
   return (
     <FormWrapper

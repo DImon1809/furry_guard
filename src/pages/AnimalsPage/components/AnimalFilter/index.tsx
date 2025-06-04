@@ -39,7 +39,7 @@ export const AnimalFilter = ({ isOpen, handleCloseFilter }: Props) => {
       </div>
 
       <div>
-        <Label htmlFor="location">Место нахождения</Label>
+        <Label htmlFor="location">Местонахождение</Label>
         <CustomSelector
           id="location"
           placeholder="Выберите местохождение..."

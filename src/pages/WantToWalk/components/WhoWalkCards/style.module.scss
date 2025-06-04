@@ -43,6 +43,7 @@
 
   @media (max-width: 640px) {
     width: 330px;
+    max-height: 164px;
   }
 
   &:active h3 {
@@ -95,9 +96,22 @@
     }
 
     .breed {
+      width: fit-content;
       display: flex;
       align-items: center;
       gap: 6px;
+
+      &__text {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      @media (max-width: 640px) {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0;
+      }
     }
 
     .gender {

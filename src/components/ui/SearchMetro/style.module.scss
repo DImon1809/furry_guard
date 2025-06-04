@@ -1,0 +1,50 @@
+.searchMetro__wrapper {
+  position: relative;
+}
+
+.metro__wrapper {
+  width: 98%;
+  height: 130px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  background-color: var(--main-color);
+  box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  top: 110%;
+  left: 50%;
+  padding: 5px 0;
+  transform: translateX(-50%);
+
+  &.long {
+    overflow-y: scroll;
+  }
+
+  .metro {
+    min-height: 40px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: #0000002a;
+      }
+    }
+
+    @media (max-width: 640px) {
+      cursor: default;
+    }
+  }
+
+  .metro__message {
+    margin: 10px auto;
+
+    h3 {
+      font-weight: 600;
+      text-align: center;
+    }
+  }
+}

@@ -1,8 +1,10 @@
 .section {
+  --filter-height: 150px;
   width: fit-content;
-  min-height: 120px;
+  min-height: var(--filter-height);
   display: flex;
   margin: 20px auto;
+  padding: 5px;
   gap: var(--space-m);
   overflow-x: hidden;
 
@@ -10,11 +12,17 @@
     flex-direction: column;
   }
 
+  @media (max-width: 640px) {
+    --filter-height: 444px;
+    padding: 0;
+  }
+
   .animals__section {
     padding: 20px;
     border-radius: 12px;
     background-color: var(--main-color);
     text-align: center;
+    box-shadow: var(--main-shadow);
 
     @media (max-width: 640px) {
       padding: 20px 20px 60px;
@@ -32,9 +40,10 @@
     height: 56px;
     position: relative;
     transition: height 0.6s ease;
+    padding: 5px 0px;
 
     &.open {
-      height: 528px;
+      height: var(--filter-height);
     }
 
     .open__filter {

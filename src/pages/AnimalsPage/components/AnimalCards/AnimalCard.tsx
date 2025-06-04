@@ -103,9 +103,11 @@ export const AnimalCard = ({ pet, nodeTime }: Props) => {
       </div>
 
       <div className={styles.animal__description}>
-        <div className={styles.nickname__status}>
+        <div className={cn(styles.nickname__status, pet.hasRecommendations && styles.long)}>
           <h3>{pet.name}</h3>
-          <p className={styles.status}>здоров</p>
+          <p className={cn(styles.status, pet.hasRecommendations && styles.recommend)}>
+            {pet.hasRecommendations ? "есть рекомендации" : "здоров"}
+          </p>
         </div>
 
         <div

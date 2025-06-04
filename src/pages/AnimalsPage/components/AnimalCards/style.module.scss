@@ -1,6 +1,6 @@
 .animals__list {
   width: fit-content;
-  min-width: 400px;
+  min-width: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,8 +14,8 @@
 }
 
 .animal__card {
-  width: 400px;
-  height: 120px;
+  width: 500px;
+  height: 160px;
   padding: 20px 10px;
   border-radius: 12px;
   box-shadow: var(--main-shadow);
@@ -24,9 +24,24 @@
   cursor: pointer;
   display: none;
 
+  @media (max-width: 640px) {
+    height: 140px;
+  }
+
   &.move {
     display: flex;
     animation: 0.2s 0s linear animator;
+  }
+
+  &:has(.walk__status:hover) {
+    h3 {
+      opacity: 1;
+      transform: none;
+    }
+
+    .animal__avatar {
+      opacity: 1;
+    }
   }
 
   @media (hover: hover) {
@@ -82,6 +97,14 @@
       align-items: center;
       gap: var(--space-2xs);
 
+      @media (max-width: 640px) {
+        &.long {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0;
+        }
+      }
+
       h3 {
         font-size: 18px;
         font-weight: 600;
@@ -90,6 +113,10 @@
 
       .status {
         color: green;
+
+        &.recommend {
+          color: rgb(221, 146, 6);
+        }
       }
     }
   }

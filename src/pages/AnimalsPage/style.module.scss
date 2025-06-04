@@ -1,66 +1,70 @@
-.section {
+// .section {
+//   width: fit-content;
+//   min-height: 120px;
+//   display: flex;
+//   margin: 20px auto;
+//   gap: var(--space-m);
+//   overflow-x: hidden;
+
+//   @media (max-width: 800px) {
+//     flex-direction: column;
+//   }
+// }
+
+.animals__section {
   width: fit-content;
-  min-height: 120px;
-  display: flex;
+  padding: 20px 36px;
   margin: 20px auto;
-  gap: var(--space-m);
+  border-radius: 12px;
+  background-color: var(--main-color);
+  text-align: center;
   overflow-x: hidden;
+  box-shadow: var(--main-shadow);
 
-  @media (max-width: 800px) {
-    flex-direction: column;
-  }
-
-  .animals__section {
-    padding: 20px;
-    border-radius: 12px;
-    background-color: var(--main-color);
-    text-align: center;
-
-    @media (max-width: 640px) {
-      padding: 20px 20px 60px;
-    }
-  }
-
-  .open__filter {
-    display: none;
+  @media (max-width: 640px) {
+    padding: 20px 20px 60px;
   }
 }
 
-@media (max-width: 640px) {
-  .additional__filter {
-    width: 100%;
-    height: 56px;
-    position: relative;
-    transition: height 0.6s ease;
-
-    &.open {
-      height: 528px;
-    }
-
-    .open__filter {
-      width: 100%;
-      height: 100%;
-      padding: 10px 0;
-      border-radius: 12px;
-      background-color: var(--main-color);
-      box-shadow: var(--main-shadow);
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      position: absolute;
-      transition: margin 0.6s ease;
-    }
-  }
-
-  .filter__wrapper {
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin-left: 200%;
-    transition: margin 0.6s ease;
-
-    &.move {
-      margin-left: 0;
-    }
-  }
+.open__filter {
+  display: none;
 }
+
+// @media (max-width: 640px) {
+//   .additional__filter {
+//     width: 100%;
+//     height: 56px;
+//     position: relative;
+//     transition: height 0.6s ease;
+
+//     &.open {
+//       height: 528px;
+//     }
+
+//     .open__filter {
+//       width: 100%;
+//       height: 100%;
+//       padding: 10px 0;
+//       border-radius: 12px;
+//       background-color: var(--main-color);
+//       box-shadow: var(--main-shadow);
+//       display: flex;
+//       justify-content: center;
+//       align-items: flex-end;
+//       position: absolute;
+//       transition: margin 0.6s ease;
+//     }
+//   }
+
+//   .filter__wrapper {
+//     position: absolute;
+//     left: 0;
+//     right: 0;
+//     margin-left: 200%;
+//     transition: margin 0.6s ease;
+
+//     &.move {
+//       margin-left: 0;
+//     }
+//   }
+// }

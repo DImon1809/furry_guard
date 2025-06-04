@@ -1,24 +1,45 @@
 import React from "react";
 import { FaPaw } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 import { matcherGender } from "@/lib/matchers";
 import { cn } from "@/lib/utils";
-import type { Pet } from "@/models/Pet";
+import type { PetCard } from "@/models/Pet";
+import { useAppDispatch } from "@/store";
+import { useLazyGetOnePetQuery } from "@/store/features/pet/petApi";
+import { choosePet } from "@/store/features/pet/petSlice";
 
 import styles from "./style.module.scss";
 
 type Props = {
-  pet: Pet & {
-    user: {
-      id: number;
-      firstName: string;
-    };
-  };
+  pet: PetCard;
   nodeTime: number;
 };
 
 export const WhoWalkCard = ({ pet, nodeTime }: Props) => {
+  const dispatch = useAppDispatch();
+
   const [isAnimation, setIsAnimation] = React.useState<boolean>(false);
+
+  const [getOnePet] = useLazyGetOnePetQuery();
+
+  const goToDetails = async () => {
+    try {
+      await getOnePet({ id: pet.petId }).unwrap();
+      dispatch(choosePet(pet.petId));
+    } catch {
+      toast.error("Что-то пошло не так", {
+        position: "top-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   React.useEffect(() => {
     if (!isAnimation) {
@@ -29,7 +50,7 @@ export const WhoWalkCard = ({ pet, nodeTime }: Props) => {
   }, [isAnimation, nodeTime]);
 
   return (
-    <div className={cn(styles.who__walk__card, isAnimation && styles.move)}>
+    <div onClick={goToDetails} className={cn(styles.who__walk__card, isAnimation && styles.move)}>
       <div className={styles.top}>
         <div className={styles.who__walk__avatar}>
           <img
@@ -44,7 +65,11 @@ export const WhoWalkCard = ({ pet, nodeTime }: Props) => {
           </div>
 
           <div className={styles.breed}>
-            {`Порода: ${pet.breed || "не указана"}`} <FaPaw />
+            <div>Порода:</div>
+            <div className={styles.breed__text}>
+              {`${pet.breed || "не указана"}`}
+              <FaPaw />
+            </div>
           </div>
 
           <div

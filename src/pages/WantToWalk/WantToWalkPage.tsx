@@ -1,8 +1,10 @@
 import React from "react";
 
+import { WhoWalkDetails } from "@/components/Details/WhoWalkDetails";
 import { HeaderByAuth } from "@/components/HeaderByAuth";
 import { Button, Input } from "@/components/ui";
 import { cn } from "@/lib/utils";
+import { useAppSelector } from "@/store";
 
 import { WhoWalkCards } from "./components/WhoWalkCards";
 import { WhoWalkFilter } from "./components/WhoWalkFilter";
@@ -10,6 +12,8 @@ import { WhoWalkFilter } from "./components/WhoWalkFilter";
 import styles from "./style.module.scss";
 
 const WantToWalkPage = () => {
+  const { chosenId } = useAppSelector(state => state.pet);
+
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [isMove, setIsMove] = React.useState<boolean>(false);
 
@@ -36,6 +40,8 @@ const WantToWalkPage = () => {
 
     setIsMove(false);
   }, [isOpen]);
+
+  if (chosenId) return <WhoWalkDetails />;
 
   // Todo выполнить рефакторинг
   return (

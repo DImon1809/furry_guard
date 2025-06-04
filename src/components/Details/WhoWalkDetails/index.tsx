@@ -1,16 +1,21 @@
+import React from "react";
 import { FaPaw } from "react-icons/fa6";
 
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
 
+import { ArrowBack } from "@/components/ui";
 import { matcherActivity, matcherGender } from "@/lib/matchers";
 import { cn } from "@/lib/utils";
 import { ActivityLevel } from "@/models/Pet";
-import { useAppSelector } from "@/store";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { removeChoosePet } from "@/store/features/pet/petSlice";
 
 import styles from "./style.module.scss";
 
-export const PetInfo = () => {
+export const WhoWalkDetails = () => {
+  const dispacth = useAppDispatch();
+
   const chosenPet = useAppSelector(state => state.pet);
 
   const petDate = chosenPet.dateOfBirth
@@ -19,26 +24,29 @@ export const PetInfo = () => {
       ? `Возраст: ${chosenPet.age.year > 4 ? chosenPet.age.year + " лет" : chosenPet.age.year + " года"} ${chosenPet.age.month > 4 ? chosenPet.age.month + " месяцев" : chosenPet.age.month + " месяца"} `
       : "Дата рождения и примерный возраст не указаны";
 
+  const closeWhoWalkDetails = () => {
+    dispacth(removeChoosePet());
+  };
+
   return (
-    <>
-      <section className={styles.pet__info}>
-        <div className={styles.pet__avatar}>
+    <section className={styles.whoWalk__details}>
+      <ArrowBack handler={closeWhoWalkDetails} />
+      <section className={styles.whoWalk__info}>
+        <div className={styles.whoWalk__avatar}>
           <img
-            src="https://www.proplan.ru/sites/default/files/styles/image_576/public/2023-08/15.jpg?itok=wkCYRRkp"
+            src="	https://kuban24.tv/wp-content/uploads/2023/06/photo_2023-06-22_11-36-58.jpg"
             alt="#"
           />
         </div>
-        <div className={styles.pet__confidant}>
-          <div className={styles.pet__name__status}>
+        <div className={styles.whoWalk__confidant}>
+          <div className={styles.whoWalk__name__status}>
             <h4>{chosenPet.name}</h4>
-            <p className={styles.status}>{`${chosenPet.gender === "М" ? "здоров" : "здорова"}`}</p>
           </div>
 
           <div
             className={cn(styles.gender, chosenPet.gender === "М" ? styles.man : styles.woman)}
           >{`Пол: ${matcherGender(chosenPet.gender)}`}</div>
 
-          <div>{`Текущий вес: ${chosenPet.weight} кг.`}</div>
           <div
             className={cn(
               styles.activity,
@@ -59,12 +67,6 @@ export const PetInfo = () => {
           <div>{petDate}</div>
         </div>
       </section>
-      <footer className={styles.footer}>
-        <div>
-          <h4>Рекомендации для вашего питомца</h4>
-        </div>
-        <div>{`${chosenPet.recommendations}`}</div>
-      </footer>
-    </>
+    </section>
   );
 };

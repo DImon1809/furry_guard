@@ -18,14 +18,24 @@
       cursor: default;
     }
 
-    &.left {
+    &.info {
       left: 0;
     }
 
-    &.right {
-      transform: translateX(105%);
-      width: 106px;
+    &.files {
+      width: 70px;
+      transform: translateX(158%);
     }
+
+    &.vaccinations {
+      width: 98px;
+      transform: translateX(206%);
+    }
+
+    // &.activity {
+    //   width: 106px;
+    //   transform: translateX(214%);
+    // }
   }
 
   .item {

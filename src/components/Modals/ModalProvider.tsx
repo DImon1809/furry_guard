@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 
+import { useCheckWidth } from "@/hooks/useCheckWidth";
 import { cn } from "@/lib/utils";
 
 import { AddPetModal } from "./AddPetModal";
@@ -34,8 +35,7 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     isOpen: false,
   });
 
-  const [windowWidth, setWindowWidth] = React.useState<number>(window.innerWidth);
-  const [isMobile, setIsMobile] = React.useState<boolean>(false);
+  const [isMobile] = useCheckWidth();
 
   const Component = state.type ? (modals as Record<string, React.ElementType>)[state.type] : null;
 
@@ -52,24 +52,6 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
   const closeModal = useCallback(() => {
     setState({ type: null, isOpen: false });
   }, [setState]);
-
-  React.useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    document.addEventListener("resize", handleResize);
-
-    return () => document.removeEventListener("resize", handleResize);
-  }, []);
-
-  React.useEffect(() => {
-    if (windowWidth <= 640) {
-      return setIsMobile(true);
-    }
-
-    setIsMobile(false);
-  }, [windowWidth]);
 
   return (
     <ModalContext.Provider value={{ modalType: state.type, openModal }}>

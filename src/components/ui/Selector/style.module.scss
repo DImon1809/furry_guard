@@ -7,7 +7,6 @@
   box-shadow: var(--main-shadow);
   border-radius: 8px;
   cursor: pointer;
-  // position: relative;
   display: flex;
   align-items: center;
 
@@ -39,14 +38,6 @@
   border-radius: 8px;
   background-color: rgb(192, 192, 199);
   box-shadow: var(--main-shadow);
-  // top: 100%;
-  // left: 0;
-  // z-index: 999;
-  // background: white;
-  // max-height: 144px;
-  // overflow-y: auto;
-  // box-shadow: var(--main-shadow);
-  // border-radius: 8px;
 
   &.long {
     overflow-y: scroll;

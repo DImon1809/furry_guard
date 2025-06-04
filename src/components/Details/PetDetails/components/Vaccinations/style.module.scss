@@ -1,0 +1,14 @@
+.vaccinations {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 10px;
+
+  h4 {
+    font-weight: 500;
+  }
+
+  div {
+    text-align: center;
+  }
+}

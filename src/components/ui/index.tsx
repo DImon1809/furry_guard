@@ -11,4 +11,5 @@ export { Heart } from "./Heart";
 export { Input } from "./input";
 export { Label } from "./label";
 export { SearchBreed } from "./SearchBreed";
+export { SearchMetro } from "./SearchMetro";
 export { Selector } from "./Selector";

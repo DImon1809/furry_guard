@@ -8,6 +8,7 @@ import { FormikErrors, FormikValues, useFormikContext } from "formik";
 
 import { Button, Input, Label } from "@/components/ui";
 import { ArrowBack } from "@/components/ui";
+import { useCheckWidth } from "@/hooks/useCheckWidth";
 import { clearFormikErrors, vEmail } from "@/lib/validations";
 import type { RegisterType } from "@/models/AuthTypes";
 import { useLoginMutation } from "@/store/features/auth/authApi";
@@ -91,8 +92,7 @@ const LoginFormWrapper = () => {
 export const LoginForm = () => {
   const [login] = useLoginMutation();
 
-  const [windowWidth, setWindowWidth] = React.useState<number>(window.innerWidth);
-  const [isMobile, setIsMobile] = React.useState<boolean>(false);
+  const [isMobile] = useCheckWidth();
 
   const navigate = useNavigate();
 
@@ -141,24 +141,6 @@ export const LoginForm = () => {
       });
     }
   };
-
-  React.useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    document.addEventListener("resize", handleResize);
-
-    return () => document.removeEventListener("resize", handleResize);
-  }, []);
-
-  React.useEffect(() => {
-    if (windowWidth <= 640) {
-      return setIsMobile(true);
-    }
-
-    setIsMobile(false);
-  }, [windowWidth]);
 
   return (
     <FormWrapper

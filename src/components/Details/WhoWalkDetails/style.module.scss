@@ -1,0 +1,115 @@
+.whoWalk__details {
+  width: 800px;
+  padding: 10px 30px 30px;
+  background-color: var(--main-color);
+  border-radius: 12px;
+  margin: 20px auto;
+  box-shadow: var(--main-shadow);
+
+  @media (max-width: 800px) {
+    width: 640px;
+  }
+
+  @media (max-width: 640px) {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .whoWalk__info {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    position: relative;
+
+    @media (max-width: 800px) {
+      margin-top: 20px;
+    }
+  }
+
+  .whoWalk__info {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    position: relative;
+
+    @media (max-width: 800px) {
+      margin-top: 20px;
+    }
+  }
+
+  .whoWalk__avatar {
+    width: 128px;
+    height: 128px;
+
+    @media (max-width: 640px) {
+      width: 74px;
+      height: 74px;
+      position: absolute;
+      right: 0;
+      top: -10px;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+
+  .whoWalk__confidant {
+    @media (max-width: 640px) {
+      display: flex;
+      flex-direction: column;
+      float: left;
+    }
+
+    .whoWalk__name__status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      h4 {
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      p {
+        color: green;
+      }
+    }
+
+    .gender {
+      &.man {
+        color: #5dade2;
+      }
+
+      &.woman {
+        color: #ff69b4;
+      }
+    }
+
+    .activity {
+      &.high {
+        color: green;
+      }
+
+      &.medium {
+        color: rgb(221, 146, 6);
+      }
+
+      &.low {
+        color: red;
+      }
+    }
+
+    .breed {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+  }
+}
