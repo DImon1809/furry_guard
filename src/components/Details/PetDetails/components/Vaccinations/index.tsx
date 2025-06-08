@@ -9,9 +9,6 @@ export const Vaccinations = () => {
 
   return (
     <section className={styles.vaccinations}>
-      <div className={styles.vaccinations__title}>
-        <h4>Здесь будут отображаться прививки вашего питомца</h4>
-      </div>
       {chosenPet.vaccinations?.commonHeader ? (
         <div className={styles.vaccination__container}>
           <h4>{chosenPet.vaccinations?.commonHeader}</h4>
