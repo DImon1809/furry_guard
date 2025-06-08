@@ -43,6 +43,13 @@ export const WhoWalkDetails = () => {
             <h4>{chosenPet.name}</h4>
           </div>
 
+          <div className={styles.breed}>
+            {`Порода: ${chosenPet.breed}`}
+            <div>
+              <FaPaw />
+            </div>
+          </div>
+
           <div
             className={cn(styles.gender, chosenPet.gender === "М" ? styles.man : styles.woman)}
           >{`Пол: ${matcherGender(chosenPet.gender)}`}</div>
@@ -59,10 +66,6 @@ export const WhoWalkDetails = () => {
                     : "",
             )}
           >{`Активность: ${matcherActivity(chosenPet.activityLevel)}`}</div>
-
-          <div className={styles.breed}>
-            {`Порода: ${chosenPet.breed}`} <FaPaw />
-          </div>
 
           <div>{petDate}</div>
         </div>

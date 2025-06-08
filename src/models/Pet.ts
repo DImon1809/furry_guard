@@ -25,7 +25,16 @@ export type Pet = {
   recommendations: string;
   petWalkingStatus: WalkingStatusDto;
   hasRecommendations: boolean;
-  vaccinations: string;
+  vaccinations: {
+    common: string | null;
+    commonHeader: string | null;
+    current: string | null;
+    currentHeader: string | null;
+    next: string | null;
+    nextHeader: string | null;
+    previous: string | null;
+    previousHeader: string | null;
+  };
   walks: string[];
   files: {
     content: string;

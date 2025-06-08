@@ -34,6 +34,13 @@ export const PetInfo = () => {
             <p className={styles.status}>{`${chosenPet.gender === "М" ? "здоров" : "здорова"}`}</p>
           </div>
 
+          <div className={styles.breed}>
+            {`Порода: ${chosenPet.breed}`}
+            <div>
+              <FaPaw />
+            </div>
+          </div>
+
           <div
             className={cn(styles.gender, chosenPet.gender === "М" ? styles.man : styles.woman)}
           >{`Пол: ${matcherGender(chosenPet.gender)}`}</div>
@@ -51,10 +58,6 @@ export const PetInfo = () => {
                     : "",
             )}
           >{`Активность: ${matcherActivity(chosenPet.activityLevel)}`}</div>
-
-          <div className={styles.breed}>
-            {`Порода: ${chosenPet.breed}`} <FaPaw />
-          </div>
 
           <div>{petDate}</div>
         </div>

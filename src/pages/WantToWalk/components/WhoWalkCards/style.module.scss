@@ -105,6 +105,11 @@
         display: flex;
         align-items: center;
         gap: 6px;
+
+        @media (max-width: 640px) {
+          max-width: 240px;
+          overflow: scroll;
+        }
       }
 
       @media (max-width: 640px) {
@@ -130,6 +135,9 @@
     align-items: center;
     justify-content: flex-end;
     gap: 6px;
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
 
     .owner__avatar {
       width: 23px;
