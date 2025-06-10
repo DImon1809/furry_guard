@@ -107,10 +107,14 @@
     }
 
     .breed {
-      width: 70%;
+      width: fit-content;
       display: flex;
       align-items: center;
       gap: 6px;
+
+      @media (max-width: 640px) {
+        width: 70%;
+      }
     }
   }
 }
