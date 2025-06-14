@@ -4,8 +4,17 @@ import { toast } from "react-toastify";
 import { FormikErrors, FormikValues, useFormikContext } from "formik";
 
 import { FormWrapper } from "@/components/Form/FormWrapper";
-import { Button, Checkbox, CustomSelector, DatePicker, Input, Label } from "@/components/ui";
-import { Cross, SearchBreed } from "@/components/ui";
+import {
+  Button,
+  Checkbox,
+  Cross,
+  CustomSelector,
+  DatePicker,
+  Input,
+  Label,
+  SearchBreed,
+  TimeSelector,
+} from "@/components/ui";
 import { matcherActivity, matcherGender } from "@/lib/matchers";
 import { clearFormikErrors, vNotEmpty } from "@/lib/validations";
 import type { Pet, SendPet } from "@/models/Pet";
@@ -27,6 +36,7 @@ type AddPetForm = Omit<
   | "petWalkingStatus"
   | "recommendations"
   | "hasRecommendations"
+  | "vaccinations"
 > & {
   gender: Pet | string;
   kilo: number;
@@ -34,13 +44,17 @@ type AddPetForm = Omit<
   year: number;
   month: number;
   week: number;
+  feed: number;
+  exactActivity: number;
 };
 
 type AddPetModalForm = {
   isNoBirth: boolean;
+  isNoActivity: boolean;
   className?: string;
   closeModal: () => void;
   setIsNoBirth: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsNoActivity: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type AddPetModalProps = {
@@ -50,7 +64,13 @@ type AddPetModalProps = {
 
 type Options = { value: string; label: string };
 
-const AddPetModalForm = ({ isNoBirth, closeModal, setIsNoBirth }: AddPetModalForm) => {
+const AddPetModalForm = ({
+  isNoBirth,
+  isNoActivity,
+  closeModal,
+  setIsNoBirth,
+  setIsNoActivity,
+}: AddPetModalForm) => {
   const { values, setFieldValue, errors, submitForm } = useFormikContext<FormikValues>();
 
   const handleSubmit = () => {
@@ -222,17 +242,54 @@ const AddPetModalForm = ({ isNoBirth, closeModal, setIsNoBirth }: AddPetModalFor
         <div className={styles.error__message}>{`${errors.gramm || ""}`}</div>
       </div>
       <div>
-        <Label htmlFor="activity__level">Активность</Label>
-        <CustomSelector
-          id="activity__level"
-          placeholder="Укажите активность..."
-          options={[ActivityLevel.HIGH, ActivityLevel.MEDIUM, ActivityLevel.LOW].reduce(
-            (acc, prev) => [...acc, { value: prev, label: matcherActivity(prev) }],
-            [] as Options[],
-          )}
-          onChange={val => setFieldValue("activityLevel", val.value, !!errors.activityLevel)}
+        <Label htmlFor="pet__feed">Питание питомца в граммах</Label>
+        <Input
+          type="number"
+          id="pet__feed"
+          placeholder="Введите количество корма"
+          className="!px-2"
+          value={values.feed}
+          onChange={event => {
+            const val = event.target.value;
+
+            if (/^\d{0,4}$/.test(val)) {
+              const cleaned = val.replace(/^0+(\d)/, "$1");
+
+              if (Number(cleaned) >= 0) setFieldValue("feed", cleaned, !!errors.feed);
+            }
+          }}
         />
-        <div className={styles.error__message}>{`${errors.activityLevel || ""}`}</div>
+        <div className={styles.error__message}>{`${errors.feed || ""}`}</div>
+      </div>
+
+      {!isNoActivity && (
+        <div>
+          <Label htmlFor="activity__level">Активность</Label>
+          <CustomSelector
+            id="activity__level"
+            placeholder="Укажите активность..."
+            options={[ActivityLevel.HIGH, ActivityLevel.MEDIUM, ActivityLevel.LOW].reduce(
+              (acc, prev) => [...acc, { value: prev, label: matcherActivity(prev) }],
+              [] as Options[],
+            )}
+            onChange={val => setFieldValue("activityLevel", val.value, !!errors.activityLevel)}
+          />
+          <div className={styles.error__message}>{`${errors.activityLevel || ""}`}</div>
+        </div>
+      )}
+      {isNoActivity && (
+        <div>
+          <Label htmlFor="exactActivity">Укажите примерное время активности за сутки</Label>
+          <TimeSelector
+            id="exactActivity"
+            onChange={val => setFieldValue("exactActivity", val, !!errors.exactActivity)}
+          />
+          <div className={styles.error__message}>{`${errors.exactActivity || ""}`}</div>
+        </div>
+      )}
+      <div className={styles.checkbox__wrapper}>
+        <Checkbox checked={isNoActivity} onChange={val => setIsNoActivity(val as boolean)} />
+        <h3>Не помню точную активность</h3>
       </div>
       <Button className="w-52" onClick={handleSubmit}>
         Добавить питомца
@@ -246,6 +303,7 @@ export const AddPetModal = ({ closeModal, className }: AddPetModalProps) => {
   const [getCurrent] = useLazyCurrentQuery();
 
   const [isNoBirth, setIsNoBirth] = React.useState<boolean>(false);
+  const [isNoActivity, setIsNoActivity] = React.useState<boolean>(false);
 
   const initialValues: AddPetForm = {
     name: "",
@@ -257,13 +315,16 @@ export const AddPetModal = ({ closeModal, className }: AddPetModalProps) => {
     dateOfBirth: "",
     kilo: 0,
     gramm: 0,
+    feed: 0,
     activityLevel: null,
+    exactActivity: 0,
   };
 
   const validate = (values: AddPetForm): FormikErrors<AddPetForm> => {
     const errors: FormikErrors<AddPetForm> = {};
 
-    const { name, breed, gender, dateOfBirth, kilo, gramm, activityLevel } = values;
+    const { name, breed, gender, dateOfBirth, kilo, gramm, feed, activityLevel, exactActivity } =
+      values;
 
     errors.name = vNotEmpty(name);
     errors.breed = vNotEmpty(breed);
@@ -271,24 +332,25 @@ export const AddPetModal = ({ closeModal, className }: AddPetModalProps) => {
     errors.dateOfBirth = vNotEmpty(dateOfBirth);
     errors.kilo = vNotEmpty(kilo);
     errors.gramm = vNotEmpty(gramm);
-    errors.activityLevel = vNotEmpty(activityLevel);
+    errors.feed = vNotEmpty(feed);
 
     if (!isNoBirth) {
       errors.dateOfBirth = vNotEmpty(dateOfBirth);
-      // errors.year = undefined;
-      // errors.month = undefined;
-      // errors.week = undefined;
     }
 
     if (isNoBirth) {
       errors.dateOfBirth = undefined;
-      // if (String(year).split("")[0] === "0") errors.year = "Некорректное число";
-      // if (String(month).split("")[0] === "0") errors.month = "Некорректное число";
-      // if (String(week).split("")[0] === "0") errors.week = "Некорректное число";
     }
 
-    // if (String(kilo).split("")[0] === "0") errors.kilo = "Некорректное число";
-    // if (String(gramm).split("")[0] === "0") errors.gramm = "Некорректное число";
+    if (!isNoActivity) {
+      errors.activityLevel = vNotEmpty(activityLevel);
+      errors.exactActivity = undefined;
+    }
+
+    if (isNoActivity) {
+      errors.activityLevel = undefined;
+      errors.exactActivity = vNotEmpty(exactActivity);
+    }
 
     return clearFormikErrors(errors);
   };
@@ -306,7 +368,9 @@ export const AddPetModal = ({ closeModal, className }: AddPetModalProps) => {
           week: values.week,
         },
         weight: Number(`${values.kilo}.${values.gramm}`),
-        activityLevel: values.activityLevel,
+        feed: Number(values.feed),
+        activityLevel: values.activityLevel || ActivityLevel.LOW,
+        exactActivity: values.exactActivity,
       };
 
       await addPet(data).unwrap();
@@ -345,7 +409,13 @@ export const AddPetModal = ({ closeModal, className }: AddPetModalProps) => {
       onSubmit={handleSubmit}
       validate={validate}
     >
-      <AddPetModalForm isNoBirth={isNoBirth} setIsNoBirth={setIsNoBirth} closeModal={closeModal} />
+      <AddPetModalForm
+        isNoBirth={isNoBirth}
+        isNoActivity={isNoActivity}
+        setIsNoBirth={setIsNoBirth}
+        setIsNoActivity={setIsNoActivity}
+        closeModal={closeModal}
+      />
     </FormWrapper>
   );
 };

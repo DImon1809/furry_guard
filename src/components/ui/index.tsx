@@ -13,3 +13,4 @@ export { Label } from "./label";
 export { SearchBreed } from "./SearchBreed";
 export { SearchMetro } from "./SearchMetro";
 export { Selector } from "./Selector";
+export { TimeSelector } from "./TimeSelector";

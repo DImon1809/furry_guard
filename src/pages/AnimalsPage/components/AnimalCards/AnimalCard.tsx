@@ -61,7 +61,7 @@ export const AnimalCard = ({ pet, nodeTime }: Props) => {
 
       await getUserData().unwrap();
 
-      toast.success("Поставьте пять плз", {
+      toast.success("Статус успешно изменён", {
         position: "top-right",
         autoClose: 1000,
         hideProgressBar: false,

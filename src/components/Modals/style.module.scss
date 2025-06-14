@@ -10,17 +10,15 @@
 
 .modal {
   min-width: 420px;
-  height: 782px;
   padding: 30px 20px;
   border-radius: 12px;
   background-color: var(--main-color);
   margin: 0;
-  position: fixed;
+  position: absolute;
   z-index: 30;
   left: 50%;
   top: 60px;
   transform: translateX(-50%);
-  overflow-y: auto;
 
   @media (max-width: 640px) {
     min-width: 360px;

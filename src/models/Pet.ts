@@ -54,8 +54,17 @@ export type PetCard = Omit<Pet, "id"> & { petId: number } & {
 
 export type SendPet = Omit<
   Pet,
-  "id" | "files" | "walks" | "petWalkingStatus" | "recommendations" | "hasRecommendations"
->;
+  | "id"
+  | "files"
+  | "walks"
+  | "petWalkingStatus"
+  | "recommendations"
+  | "hasRecommendations"
+  | "vaccinations"
+> & {
+  feed: number;
+  exactActivity?: number;
+};
 
 export type VaccinationType = {
   fileName: string;
