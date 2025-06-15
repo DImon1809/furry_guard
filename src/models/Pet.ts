@@ -21,6 +21,8 @@ export type Pet = {
   };
   dateOfBirth: string | null;
   weight: number;
+  feed: number;
+  exactActivity: number;
   activityLevel: ActivityLevel | null;
   recommendations: string;
   petWalkingStatus: WalkingStatusDto;

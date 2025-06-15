@@ -4,11 +4,13 @@ import { useCheckWidth } from "@/hooks/useCheckWidth";
 import { cn } from "@/lib/utils";
 
 import { AddPetModal } from "./AddPetModal";
+import { EditPetInfoModal } from "./EditPetInfoModal";
 
 import styles from "./style.module.scss";
 
 const modals = {
   addPet: AddPetModal,
+  editPet: EditPetInfoModal,
 };
 
 type ModalsType = keyof typeof modals;
@@ -53,6 +55,7 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
     setState({ type: null, isOpen: false });
   }, [setState]);
 
+  // Todo переделать z-index у модального окна
   return (
     <ModalContext.Provider value={{ modalType: state.type, openModal }}>
       {state.isOpen && Component && (

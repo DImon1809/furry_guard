@@ -20,12 +20,12 @@ export function DatePicker({
   ...props
 }: React.ComponentProps<"div"> & { text: string } & {
   value: Date;
-  onChange: (val: Date) => void;
+  onChange: (val: string) => void;
 }) {
   const [date, setDate] = React.useState<Date>();
 
   React.useEffect(() => {
-    if (date) onChange(date);
+    if (date) onChange(format(date, "yyyy-MM-dd"));
   }, [date]);
 
   return (

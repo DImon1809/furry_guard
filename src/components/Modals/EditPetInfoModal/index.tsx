@@ -1,7 +1,8 @@
 import React from "react";
 import { toast } from "react-toastify";
 
-import { FormikErrors, FormikValues, useFormikContext } from "formik";
+import type { FormikErrors, FormikValues } from "formik";
+import { useFormikContext } from "formik";
 
 import { FormWrapper } from "@/components/Form/FormWrapper";
 import {
@@ -12,110 +13,62 @@ import {
   DatePicker,
   Input,
   Label,
-  SearchBreed,
   TimeSelector,
 } from "@/components/ui";
 import type { Option } from "@/components/ui/CustomSelector";
-import { matcherActivity, matcherGender } from "@/lib/matchers";
+import { matcherActivity } from "@/lib/matchers";
 import { clearFormikErrors, vNotEmpty } from "@/lib/validations";
-import type { Pet, SendPet } from "@/models/Pet";
 import { ActivityLevel } from "@/models/Pet";
-import { useLazyCurrentQuery } from "@/store/features/currentUser/currentUserApi";
-import { useAddPetMutation } from "@/store/features/pet/petApi";
+import { useAppSelector } from "@/store";
+import { useLazyGetOnePetQuery, useUpdatePetDataMutation } from "@/store/features/pet/petApi";
 
 import styles from "./style.module.scss";
 
-// Todo посмотреть тип
-type AddPetForm = Omit<
-  Pet,
-  | "id"
-  | "gender"
-  | "weight"
-  | "age"
-  | "files"
-  | "walks"
-  | "petWalkingStatus"
-  | "recommendations"
-  | "hasRecommendations"
-  | "vaccinations"
-> & {
-  gender: Pet | string;
-  kilo: number;
-  gramm: number;
+type EditPetType = {
+  dateOfBirth: string | null;
   year: number;
   month: number;
   week: number;
+  kilo: number;
+  gramm: number;
+  feed: number;
+  activityLevel: ActivityLevel | null;
+  exactActivity: number;
 };
 
-type AddPetModalForm = {
+type EditPetInfoModalForm = {
   isNoBirth: boolean;
   isNoActivity: boolean;
-  className?: string;
   closeModal: () => void;
   setIsNoBirth: React.Dispatch<React.SetStateAction<boolean>>;
   setIsNoActivity: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-type AddPetModalProps = {
-  className?: string;
+type EditPetInfoModal = {
+  className: string;
   closeModal: () => void;
 };
 
-const AddPetModalForm = ({
+export const EditPetInfoModalForm = ({
   isNoBirth,
   isNoActivity,
   closeModal,
   setIsNoBirth,
   setIsNoActivity,
-}: AddPetModalForm) => {
+}: EditPetInfoModalForm) => {
   const { values, setFieldValue, errors, submitForm } = useFormikContext<FormikValues>();
 
   const handleSubmit = () => {
     submitForm();
   };
 
+  // Todo выполнить рефакторинг
   return (
     <>
       <div className={styles.cross__wrapper} onClick={closeModal}>
         <Cross />
       </div>
-      <div>
-        <Label htmlFor="pet__name">Кличка</Label>
-        <Input
-          type="text"
-          id="pet__name"
-          placeholder="Введите кличку"
-          className="!px-2"
-          value={values.name}
-          onChange={event => setFieldValue("name", event.target.value, !!errors.name)}
-        />
-        <div className={styles.error__message}>{`${errors.name || ""}`}</div>
-      </div>
-      <div>
-        <SearchBreed setValue={val => setFieldValue("breed", val, !!errors.breed)} />
-        <div className={styles.error__message}>{`${errors.breed || ""}`}</div>
-      </div>
-      <div>
-        <Label htmlFor="gender">Пол</Label>
-        <CustomSelector
-          id="gender"
-          placeholder="Выберите местонахождение..."
-          options={["М", "Ж"].reduce(
-            (acc, prev) => [
-              ...acc,
-              { value: prev, label: matcherGender(prev as "М" | "Ж" | null) },
-            ],
-            [] as Option[],
-          )}
-          onChange={val => setFieldValue("gender", val.value, !!errors.gender)}
-        />
-        <div className={styles.error__message}>{`${errors.gender || ""}`}</div>
-      </div>
-      {/* Todo посмотреть label */}
-      <div className={styles.checkbox__wrapper}>
-        <Checkbox checked={isNoBirth} onChange={val => setIsNoBirth(val as boolean)} />
-        <h3>Не помню точную дату рождения</h3>
-      </div>
+
       {!isNoBirth && (
         <div>
           <Label htmlFor="pet__birth">Дата рождения</Label>
@@ -195,9 +148,11 @@ const AddPetModalForm = ({
           </div>
         </div>
       )}
-      <div>
-        <h4>Укажите точный вес питомца</h4>
+      <div className={styles.checkbox__wrapper}>
+        <Checkbox checked={isNoBirth} onChange={val => setIsNoBirth(val as boolean)} />
+        <h3>Не помню точную дату рождения</h3>
       </div>
+
       <div>
         <Label htmlFor="pet__kilo">Килограммы</Label>
         <Input
@@ -238,6 +193,7 @@ const AddPetModalForm = ({
         />
         <div className={styles.error__message}>{`${errors.gramm || ""}`}</div>
       </div>
+
       <div>
         <Label htmlFor="pet__feed">Питание питомца в граммах</Label>
         <Input
@@ -265,6 +221,10 @@ const AddPetModalForm = ({
           <CustomSelector
             id="activity__level"
             placeholder="Укажите активность..."
+            defaultValue={{
+              value: values.activityLevel,
+              label: matcherActivity(values.activityLevel),
+            }}
             options={[ActivityLevel.HIGH, ActivityLevel.MEDIUM, ActivityLevel.LOW].reduce(
               (acc, prev) => [...acc, { value: prev, label: matcherActivity(prev) }],
               [] as Option[],
@@ -290,46 +250,48 @@ const AddPetModalForm = ({
       </div>
 
       <Button className="w-52" onClick={handleSubmit}>
-        Добавить питомца
+        Изменить данные
       </Button>
     </>
   );
 };
 
-export const AddPetModal = ({ closeModal, className }: AddPetModalProps) => {
-  const [addPet] = useAddPetMutation();
-  const [getCurrent] = useLazyCurrentQuery();
+export const EditPetInfoModal = ({ className, closeModal }: EditPetInfoModal) => {
+  const pet = useAppSelector(state => state.pet);
+
+  const [updatePetData] = useUpdatePetDataMutation();
+  const [getOnePet] = useLazyGetOnePetQuery();
 
   const [isNoBirth, setIsNoBirth] = React.useState<boolean>(false);
   const [isNoActivity, setIsNoActivity] = React.useState<boolean>(false);
 
-  const initialValues: AddPetForm = {
-    name: "",
-    breed: "",
-    gender: "",
-    year: 0,
-    month: 0,
-    week: 0,
-    dateOfBirth: "",
-    kilo: 0,
-    gramm: 0,
-    feed: 0,
-    activityLevel: null,
-    exactActivity: 0,
-  };
+  const initialValues = React.useMemo(() => {
+    const temp = String(pet.weight).split(".");
 
-  const validate = (values: AddPetForm): FormikErrors<AddPetForm> => {
-    const errors: FormikErrors<AddPetForm> = {};
+    const kilo = temp?.[0] ? Number(temp[0]) : 0;
+    const gramm = temp?.[1] ? Number(temp[1]) : 0;
 
-    const { name, breed, gender, dateOfBirth, kilo, gramm, feed, activityLevel, exactActivity } =
-      values;
+    return {
+      dateOfBirth: pet.dateOfBirth,
+      year: pet.age?.year || 0,
+      month: pet.age?.month || 0,
+      week: pet.age?.week || 0,
+      kilo,
+      gramm,
+      feed: pet.feed,
+      activityLevel: pet.activityLevel ? pet.activityLevel : null,
+      exactActivity: pet.exactActivity,
+    };
+  }, [pet]);
 
-    errors.name = vNotEmpty(name);
-    errors.breed = vNotEmpty(breed);
-    errors.gender = vNotEmpty(gender);
-    errors.dateOfBirth = vNotEmpty(dateOfBirth);
+  const validate = (values: EditPetType) => {
+    const errors: FormikErrors<EditPetType> = {};
+
+    const { dateOfBirth, kilo, gramm, activityLevel, feed } = values;
+
     errors.kilo = vNotEmpty(kilo);
     errors.gramm = vNotEmpty(gramm);
+    errors.activityLevel = vNotEmpty(activityLevel);
     errors.feed = vNotEmpty(feed);
 
     if (!isNoBirth) {
@@ -340,43 +302,47 @@ export const AddPetModal = ({ closeModal, className }: AddPetModalProps) => {
       errors.dateOfBirth = undefined;
     }
 
-    if (!isNoActivity) {
-      errors.activityLevel = vNotEmpty(activityLevel);
-      errors.exactActivity = undefined;
-    }
-
-    if (isNoActivity) {
-      errors.activityLevel = undefined;
-      errors.exactActivity = vNotEmpty(exactActivity);
-    }
-
     return clearFormikErrors(errors);
   };
 
-  const handleSubmit = async (values: AddPetForm) => {
+  const handleSubmit = async (values: EditPetType) => {
     try {
-      const data: SendPet = {
-        name: values.name,
-        breed: values.breed,
-        gender: values.gender as Pet["gender"],
-        dateOfBirth: values.dateOfBirth,
-        age: {
-          year: values.year,
-          month: values.month,
-          week: values.week,
+      const data: {
+        id: number;
+        body: {
+          dateOfBirth: string | null;
+          age: {
+            year: number;
+            month: number;
+            week: number;
+          };
+          weight: number;
+          feed: number;
+          activityLevel: ActivityLevel;
+          exactActivity: number;
+        };
+      } = {
+        id: pet.chosenId!,
+        body: {
+          dateOfBirth: values.dateOfBirth,
+          age: {
+            year: values.year,
+            month: values.month,
+            week: values.week,
+          },
+          weight: Number(`${values.kilo}.${values.gramm}`),
+          feed: Number(values.feed),
+          activityLevel: values.activityLevel || ActivityLevel.LOW,
+          exactActivity: values.exactActivity,
         },
-        weight: Number(`${values.kilo}.${values.gramm}`),
-        feed: Number(values.feed),
-        activityLevel: values.activityLevel || ActivityLevel.LOW,
-        exactActivity: values.exactActivity,
       };
 
-      await addPet(data).unwrap();
-      await getCurrent().unwrap();
+      await updatePetData(data).unwrap();
+      await getOnePet({ id: pet.chosenId! }).unwrap();
 
       closeModal();
 
-      toast.success("Питомец успешно добавлен", {
+      toast.success("Данные питомца успешно обновлены", {
         position: "top-right",
         autoClose: 1000,
         hideProgressBar: false,
@@ -404,10 +370,10 @@ export const AddPetModal = ({ closeModal, className }: AddPetModalProps) => {
     <FormWrapper
       className={className}
       initialValues={initialValues}
-      onSubmit={handleSubmit}
       validate={validate}
+      onSubmit={handleSubmit}
     >
-      <AddPetModalForm
+      <EditPetInfoModalForm
         isNoBirth={isNoBirth}
         isNoActivity={isNoActivity}
         setIsNoBirth={setIsNoBirth}

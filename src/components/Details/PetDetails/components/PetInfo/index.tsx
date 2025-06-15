@@ -3,6 +3,8 @@ import { FaPaw } from "react-icons/fa6";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
 
+import { Button } from "@/components/ui";
+import { useModal } from "@/hooks/useModal";
 import { matcherActivity, matcherGender } from "@/lib/matchers";
 import { cn } from "@/lib/utils";
 import { ActivityLevel } from "@/models/Pet";
@@ -11,6 +13,8 @@ import { useAppSelector } from "@/store";
 import styles from "./style.module.scss";
 
 export const PetInfo = () => {
+  const openModal = useModal();
+
   const chosenPet = useAppSelector(state => state.pet);
 
   const petDate = chosenPet.dateOfBirth
@@ -18,6 +22,10 @@ export const PetInfo = () => {
     : chosenPet.age.year && chosenPet.age.month
       ? `Возраст: ${chosenPet.age.year > 4 ? chosenPet.age.year + " лет" : chosenPet.age.year + " года"} ${chosenPet.age.month > 4 ? chosenPet.age.month + " месяцев" : chosenPet.age.month + " месяца"} `
       : "Дата рождения и примерный возраст не указаны";
+
+  const handleEditButton = () => {
+    openModal("editPet");
+  };
 
   return (
     <>
@@ -60,6 +68,9 @@ export const PetInfo = () => {
           >{`Активность: ${matcherActivity(chosenPet.activityLevel)}`}</div>
 
           <div>{petDate}</div>
+          <Button className="w-56 !mt-2" variant="outline" onClick={handleEditButton}>
+            Редактировать информацию
+          </Button>
         </div>
       </section>
       <footer className={styles.footer}>

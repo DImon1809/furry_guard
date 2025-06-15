@@ -1,37 +1,17 @@
 import React from "react";
-import { toast } from "react-toastify";
 
-import { useAppSelector } from "@/store";
-import { useGetAllWhoWalkMutation } from "@/store/features/pet/petApi";
+import type { PetCard } from "@/models/Pet";
 
 import { WhoWalkCard } from "./WhoWalkCard";
 
 import styles from "./style.module.scss";
 
-export const WhoWalkCards = () => {
-  const { id } = useAppSelector(state => state.currentUser);
+type Props = {
+  walkPets: PetCard[];
+  isSuccess: boolean;
+};
 
-  const [getAllWhoWalk, { data: whoWalk, isSuccess }] = useGetAllWhoWalkMutation();
-
-  const walkPets = whoWalk?.filter(({ user }) => user.id !== id);
-
-  React.useEffect(() => {
-    getAllWhoWalk()
-      .unwrap()
-      .catch(() => {
-        toast.error("Неверный логин или пароль", {
-          position: "top-right",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      });
-  }, []);
-
+export const WhoWalkCards = ({ walkPets, isSuccess }: Props) => {
   // Todo переделать логику
   return (
     <div className={styles.who__walk__list}>

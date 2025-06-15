@@ -1,4 +1,4 @@
-import type { Pet, PetCard, SendPet, VaccinationType } from "@/models/Pet";
+import type { ActivityLevel, Pet, PetCard, SendPet, VaccinationType } from "@/models/Pet";
 import { WalkingStatusDto } from "@/models/Pet";
 import { serviceApi } from "@/store/serviceApi";
 
@@ -16,6 +16,31 @@ export const petApi = serviceApi.injectEndpoints({
       query: ({ id }) => ({
         url: `/pet/${id}`,
         method: "get",
+      }),
+    }),
+
+    updatePetData: builder.mutation<
+      void,
+      {
+        id: number;
+        body: {
+          dateOfBirth: string | null;
+          age: {
+            year: number;
+            month: number;
+            week: number;
+          };
+          weight: number;
+          feed: number;
+          activityLevel: ActivityLevel;
+          exactActivity: number;
+        };
+      }
+    >({
+      query: data => ({
+        url: `/pet/update/${data.id}`,
+        method: "post",
+        body: data.body,
       }),
     }),
 
@@ -80,6 +105,7 @@ export const petApi = serviceApi.injectEndpoints({
 export const {
   useAddPetMutation,
   useLazyGetOnePetQuery,
+  useUpdatePetDataMutation,
   useToggleWalkStatusMutation,
   useGetAllWhoWalkMutation,
   useLoadFileMutation,

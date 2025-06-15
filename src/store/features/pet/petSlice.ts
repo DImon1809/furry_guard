@@ -19,6 +19,8 @@ const initialState: Omit<Pet, "id"> & { chosenId: number | null } = {
   },
   dateOfBirth: null,
   weight: 0,
+  feed: 0,
+  exactActivity: 0,
   recommendations: "",
   hasRecommendations: false,
   vaccinations: {
